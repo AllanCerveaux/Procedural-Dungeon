@@ -78,4 +78,4 @@ Read the [news page](https://github.com/AllanCerveaux/Procedural-Dungeon/blob/ma
 
 ## License
 
-This software is distributed under the terms of the MIT License.
+This software is distributed under the terms of the [MIT License](https://github.com/AllanCerveaux/Procedural-Dungeon/blob/master/LISCENCE.md).
