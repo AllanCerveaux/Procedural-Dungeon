@@ -2,7 +2,8 @@
   "title": "Procedural Dungeon",
   "description": "Best Procedural Dungeon ever seen in js",
   "version": "0.0.1Alpha",
-  "url": "https://example.com/",
+  "url": "https://callan.fr/",
+  "author":"Callan",
   "scripts": {
     "clean": "gulp clean",
     "dist": "gulp dist",
