@@ -2,7 +2,6 @@ import { AudioEnginePlugin } from '../../../../plugins/audioEngine/AudioEngine.p
 import { SoundPlayer } from '../../../../plugins/audioEngine/classes'
 import { SoundType } from '../../../../plugins/audioEngine/types'
 import { State } from '../../../../plugins/state-machine/types'
-
 export class PhaserLogo extends Phaser.Physics.Arcade.Sprite {
   soundPlayer: SoundPlayer
   // effectsChannel: ChannelStrip
@@ -15,16 +14,15 @@ export class PhaserLogo extends Phaser.Physics.Arcade.Sprite {
     private ae: AudioEnginePlugin = scene.plugins.get('AudioEngine') as AudioEnginePlugin
   ) {
     super(scene, x, y, 'phaser-logo')
-    this.keys = scene.input.keyboard.createCursorKeys()
-    // @ts-ignore
-    this.sm = scene.stateMachine
+    this.keys = this.scene.input.keyboard.createCursorKeys()
+    this.sm = scene['stateMachine']
     this.sm.init({
       initial: 'idle',
       states: {
         idle: new IdleState(),
         jump: new JumpState(),
       },
-      args: [scene, this],
+      args: [this.scene, this],
     })
 
     scene.add.existing(this)

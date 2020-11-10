@@ -19,7 +19,6 @@ export class StateMachine implements Machine {
   step() {
     if (this.state === null) {
       this.state = this.initial
-      console.log(this.states[this.state])
       this.states[this.state].enter(...this.args)
     }
     this.states[this.state].execute(...this.args)
