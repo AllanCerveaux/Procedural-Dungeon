@@ -21,9 +21,8 @@ const config: Phaser.Types.Core.GameConfig = {
       {
         key: 'StateMachine',
         plugin: StateMachinePlugin,
-        start: true,
+        start: false,
         mapping: 'stateMachine',
-        data: { initial: '', states: {}, args: [] },
       },
     ],
   },

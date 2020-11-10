@@ -8,9 +8,11 @@ export class StateMachinePlugin extends Phaser.Plugins.BasePlugin {
     this.pluginManager.registerGameObject('StateMachine')
   }
 
-  init(data: any) {
-    const { initial, states, args } = data
-    this.stateMachine = new StateMachine(initial, states, args)
+  init(data?: any) {
+    if (data) {
+      const { initial, states, args } = data
+      this.stateMachine = new StateMachine(initial, states, args)
+    }
   }
 
   step() {
