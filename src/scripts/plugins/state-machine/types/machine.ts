@@ -3,7 +3,8 @@ import { Dic } from '../../../utils/types'
 export abstract class Machine {
   initial: string
   states: Dic<State>
-  args: Phaser.Scene[]
+  state: string
+  args: Dic<any>[]
   abstract step(): void
   abstract transition(newState: string, ...enterArgs: unknown[]): void
 }

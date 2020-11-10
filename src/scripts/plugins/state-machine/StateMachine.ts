@@ -4,15 +4,14 @@ import { Machine, State } from './types'
 export class StateMachine implements Machine {
   initial: string
   states: Dic<State>
-  args
-  state = null
+  args: Dic<any>[]
+  state: string = null
 
   constructor(initial, states, args = []) {
     this.initial = initial
     this.states = states
     this.args = args
     for (const state of Object.values(this.states)) {
-      console.log(state)
       state.stateMachine = this
     }
   }
@@ -23,7 +22,6 @@ export class StateMachine implements Machine {
       console.log(this.states[this.state])
       this.states[this.state].enter(...this.args)
     }
-
     this.states[this.state].execute(...this.args)
   }
 
