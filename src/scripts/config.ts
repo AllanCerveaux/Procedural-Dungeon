@@ -18,7 +18,13 @@ const config: Phaser.Types.Core.GameConfig = {
   plugins: {
     global: [
       { key: 'AudioEngine', plugin: AudioEnginePlugin, start: true },
-      { key: 'StateMachine', plugin: StateMachinePlugin, start: true },
+      {
+        key: 'StateMachine',
+        plugin: StateMachinePlugin,
+        start: true,
+        mapping: 'stateMachine',
+        data: { initial: '', states: {}, args: [] },
+      },
     ],
   },
   scale: {

@@ -8,7 +8,11 @@ export class StateMachine implements Machine {
   state = null
 
   constructor(initial, states, args = []) {
+    this.initial = initial
+    this.states = states
+    this.args = args
     for (const state of Object.values(this.states)) {
+      console.log(state)
       state.stateMachine = this
     }
   }
@@ -16,6 +20,7 @@ export class StateMachine implements Machine {
   step() {
     if (this.state === null) {
       this.state = this.initial
+      console.log(this.states[this.state])
       this.states[this.state].enter(...this.args)
     }
 
