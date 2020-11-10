@@ -16,7 +16,7 @@ export class PhaserLogo extends Phaser.Physics.Arcade.Sprite {
     super(scene, x, y, 'phaser-logo')
     console.log(scene)
     this.keys = this.scene.input.keyboard.createCursorKeys()
-    this.sm = scene['stateMachine']
+    this.sm = scene.plugins.get('StateMachine')
     this.sm.init({
       initial: 'idle',
       states: {
