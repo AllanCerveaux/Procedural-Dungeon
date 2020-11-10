@@ -14,6 +14,7 @@ export class PhaserLogo extends Phaser.Physics.Arcade.Sprite {
     private ae: AudioEnginePlugin = scene.plugins.get('AudioEngine') as AudioEnginePlugin
   ) {
     super(scene, x, y, 'phaser-logo')
+    console.log(scene)
     this.keys = this.scene.input.keyboard.createCursorKeys()
     this.sm = scene['stateMachine']
     this.sm.init({

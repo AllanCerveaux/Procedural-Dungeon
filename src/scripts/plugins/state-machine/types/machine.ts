@@ -1,4 +1,4 @@
-import { Dic } from '../../../utils/types'
+import { Dic } from './dic'
 
 export abstract class Machine {
   initial: string
@@ -6,11 +6,11 @@ export abstract class Machine {
   state: string
   args: Dic<any>[]
   abstract step(): void
-  abstract transition(newState: string, ...enterArgs: unknown[]): void
+  abstract transition(newState: string, ...enterArgs: Dic<any>[]): void
 }
 
 export abstract class State {
   stateMachine: Machine
-  abstract enter(...args: unknown[]): void
-  abstract execute(...args: unknown[]): void
+  abstract enter(...args: Dic<any>[]): void
+  abstract execute(...args: Dic<any>[]): void
 }
