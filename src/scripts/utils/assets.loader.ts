@@ -1,4 +1,4 @@
-export default class AssetsLoader {
+export class AssetsLoader {
   constructor(private scene: Phaser.Scene) {}
 
   public init(): void {

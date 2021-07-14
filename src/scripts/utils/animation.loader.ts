@@ -1,6 +1,6 @@
 import { Anim } from './types'
 
-export default class AnimationLoader {
+export class AnimationLoader {
   frameName = []
   anims: Anim[] = [
     { name: 'idle', frame: 4, repeat: -1 },

@@ -1,3 +1,3 @@
-export default class Hero {
+export class Hero {
   constructor() {}
 }

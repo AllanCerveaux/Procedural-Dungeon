@@ -1,3 +1,3 @@
-export default class Enemy {
+export class Enemy {
   constructor() {}
 }

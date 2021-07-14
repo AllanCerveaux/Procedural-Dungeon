@@ -1,1 +1,1 @@
-export { default as Enemy } from './enemy'
+export * from './enemy'

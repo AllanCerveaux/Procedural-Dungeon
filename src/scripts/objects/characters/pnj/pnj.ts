@@ -1,3 +1,3 @@
-export default class Pnj {
+export class Pnj {
   constructor() {}
 }

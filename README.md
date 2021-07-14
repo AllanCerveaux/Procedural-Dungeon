@@ -26,9 +26,27 @@ cd Procedural-Dungeon
 npm install # or yarn install
 ```
 
-## Brief and Tutorial
+## Usage
 
-> WIP !
+### Generators
+
+#### `object` generator
+
+`npm run object:new <name>`
+
+Create game class object and updates the `objects/<object>/index.js`. This generator will ask which Phaser game object class your want your new game object class to extend from.
+
+- **Arguments**:
+  - `name`: The object class name.
+
+#### `scene` generator
+
+`npm run scene:new <name>`
+
+Creates scene classes and updates the `scenes/index.js` module with the new entries.
+
+- **Arguments**:
+  - `names`: Required. The name (or names) of the scene class.
 
 ## Project Setup
 

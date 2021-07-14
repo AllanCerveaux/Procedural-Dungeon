@@ -1,1 +1,1 @@
-export { default as Pnj } from './pnj'
+export * from './pnj'
