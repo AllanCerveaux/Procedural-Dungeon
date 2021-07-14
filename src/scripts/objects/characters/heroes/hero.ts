@@ -1,6 +1,21 @@
 import { StateMachinePlugin } from '../../../plugins/state-machine/StateMachine.plugin'
+import { Item } from '../../items'
+import { Character, CharacterActionsPlayer, Direction, Effect, Inventory, State } from '../types'
 import { ActiveItem, AttackState, IdleState, MoveState, SupportItem } from './states'
-export class Hero extends Phaser.GameObjects.Sprite {
+export class Hero extends Phaser.GameObjects.Sprite implements Character, CharacterActionsPlayer {
+  life = {
+    heart: 0,
+    max: 10,
+    extra: 0,
+  }
+  attackCost = 0
+  attackSpeed = 0
+  defenseCost = 0
+  luck = 0
+  effect: Effect[]
+  inventory: Inventory
+  direction: Direction
+  state: State
   private stateMachine: StateMachinePlugin
   public keys
   public config
@@ -57,4 +72,30 @@ export class Hero extends Phaser.GameObjects.Sprite {
   set speed(payload: number) {
     this._speed = payload
   }
+
+  heal(): void {}
+
+  getDamage(): void {}
+
+  attack(): void {}
+
+  setEffect(): void {}
+
+  removeEffect(): void {}
+
+  setWeapon(): void {}
+
+  setActiveItem(): void {}
+
+  setItemInInventory(item: Item): void {}
+
+  dropItems(trinket: Item, consumable: Item): void {}
+
+  useConsumable(item: Item): void {}
+
+  useActivableItem(activable: Item): void {}
+
+  talk(): void {}
+
+  die(): void {}
 }
