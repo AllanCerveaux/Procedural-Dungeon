@@ -6,7 +6,7 @@ export class StateMachine implements Machine {
   states: Dic<State>
   args: Dic<any>[]
   state: string = null
-
+  previous_state: string = null
   constructor(initial, states, args = []) {
     this.initial = initial
     this.states = states
@@ -16,7 +16,7 @@ export class StateMachine implements Machine {
     }
   }
 
-  step() {
+  step(): void {
     if (this.state === null) {
       this.state = this.initial
       this.states[this.state].enter(...this.args)
@@ -24,7 +24,8 @@ export class StateMachine implements Machine {
     this.states[this.state].execute(...this.args)
   }
 
-  transition(newState, ...enterArgs) {
+  transition(newState, ...enterArgs): void {
+    this.previous_state = this.state
     this.state = newState
     this.states[this.state].enter(...this.args, ...enterArgs)
   }
