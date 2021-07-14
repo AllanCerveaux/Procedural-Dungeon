@@ -3,8 +3,9 @@ import { Dic } from './dic'
 export abstract class Machine {
   initial: string
   states: Dic<State>
-  state: string
   args: Dic<any>[]
+  state: string
+  previous_state: string
   abstract step(): void
   abstract transition(newState: string, ...enterArgs: Dic<any>[]): void
 }
