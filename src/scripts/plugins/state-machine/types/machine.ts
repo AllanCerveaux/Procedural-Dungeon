@@ -8,6 +8,7 @@ export abstract class Machine {
   previous_state: string
   abstract step(): void
   abstract transition(newState: string, ...enterArgs: Dic<any>[]): void
+  abstract showState(): string
 }
 
 export abstract class State {

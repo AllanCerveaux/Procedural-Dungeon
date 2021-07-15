@@ -1,5 +1,6 @@
-import { Dic } from '../../utils/types'
 import { Machine, State } from './types'
+
+import { Dic } from '../../utils/types'
 
 export class StateMachine implements Machine {
   initial: string
@@ -28,5 +29,9 @@ export class StateMachine implements Machine {
     this.previous_state = this.state
     this.state = newState
     this.states[this.state].enter(...this.args, ...enterArgs)
+  }
+
+  showState(): string {
+    return this.state
   }
 }
