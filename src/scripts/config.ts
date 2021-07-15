@@ -1,4 +1,5 @@
 import { AudioEnginePlugin } from './plugins/audioEngine/AudioEngine.plugin'
+import { StateMachinePlugin } from './plugins/state-machine/StateMachine.plugin'
 import * as scenes from './scenes'
 
 const DEFAULT_WIDTH = 1280
@@ -15,7 +16,15 @@ const config: Phaser.Types.Core.GameConfig = {
     path: 'assets/',
   },
   plugins: {
-    global: [{ key: 'AudioEngine', plugin: AudioEnginePlugin, start: true }],
+    global: [
+      { key: 'AudioEngine', plugin: AudioEnginePlugin, start: true },
+      {
+        key: 'StateMachine',
+        plugin: StateMachinePlugin,
+        start: false,
+        mapping: 'statemachine',
+      },
+    ],
   },
   scale: {
     parent: 'phaser-game',
