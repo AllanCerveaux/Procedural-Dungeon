@@ -2,19 +2,23 @@
 
 ## Table of Contents
 
-- [Installation and Usage](#installation-and-usage)
-- [Brief and Tutorial](#brief-and-tutorial)
-- [Project Setup](#project-setup)
-- [Contributing](#contributing)
-- [Release Notes](#release-notes)
-- [Liscence](#liscence)
+- [Procedural Dungeon](#procedural-dungeon)
+  - [Table of Contents](#table-of-contents)
+  - [Installation](#installation)
+  - [Project Setup](#project-setup)
+    - [Features](#features)
+    - [Application Layout](#application-layout)
+  - [Contributing](#contributing)
+  - [Release Notes](#release-notes)
+  - [License](#license)
+  - [Credit](#credit)
 
 > I decided to start developing Procedural Dungeon again, because the code was
 > far too rough.
 > New version of [Procedural Dungeon(old)](http://procedural-dungeon.surge.sh)
 > You can find [Old repository](https://github.com/AllanCerveaux/Old-Procedural-Dungeon)
 
-## Installation and Usage
+## Installation
 
 > NOTE: Assuming you have at least the latest [Node.js](https://nodejs.org/) [release with long-term](https://nodejs.org/en/about/releases/) support installed.
 
@@ -25,29 +29,6 @@ git clone https://github.com/AllanCerveaux/Procedural-Dungeon
 cd Procedural-Dungeon
 npm install # or yarn install
 ```
-
-## Usage
-
-### Generators
-
-#### `object` generator
-
-`npm run object:new <name>`
-
-Create game class object and updates the `objects/<object>/index.js`. This generator will ask which Phaser game object class your want your new game object class to extend from.
-
-- **Arguments**:
-  - `name`: The object class name.
-
-#### `scene` generator
-
-`npm run scene:new <name>`
-
-Creates scene classes and updates the `scenes/index.js` module with the new entries.
-
-- **Arguments**:
-  - `names`: Required. The name (or names) of the scene class.
-
 ## Project Setup
 
 > WIP !
