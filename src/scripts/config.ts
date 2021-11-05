@@ -1,6 +1,7 @@
+import * as scenes from './scenes'
+
 import { AudioEnginePlugin } from './plugins/audioEngine/AudioEngine.plugin'
 import { StateMachinePlugin } from './plugins/state-machine/StateMachine.plugin'
-import * as scenes from './scenes'
 
 const DEFAULT_WIDTH = 1280
 const DEFAULT_HEIGHT = 720

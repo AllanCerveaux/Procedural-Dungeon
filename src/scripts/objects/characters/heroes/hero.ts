@@ -1,11 +1,13 @@
-import { StateMachinePlugin } from '../../../plugins/state-machine/StateMachine.plugin'
-import { Item } from '../../items'
-import { Character, CharacterActionsPlayer, Direction, Effect, Inventory, State } from '../types'
 import { ActiveItem, AttackState, IdleState, MoveState, SupportItem } from './states'
+import { Character, CharacterActionsPlayer, Direction, Effect, Inventory, State } from '../types'
+
+import { Item } from '../../items'
+import { StateMachinePlugin } from '../../../plugins/state-machine/StateMachine.plugin'
+
 export class Hero extends Phaser.GameObjects.Sprite implements Character, CharacterActionsPlayer {
   life = {
-    heart: 0,
-    max: 10,
+    heart: 6,
+    max: 20,
     extra: 0,
   }
   attackCost = 0

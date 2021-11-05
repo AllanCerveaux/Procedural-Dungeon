@@ -4,4 +4,7 @@ export enum State {
   HIT,
   DIE,
   TALK,
+  ACTIVEITEM,
+  ATTACK,
+  SUPPORTITEM,
 }
