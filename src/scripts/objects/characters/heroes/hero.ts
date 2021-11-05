@@ -1,8 +1,6 @@
-import { ActiveItem, AttackState, IdleState, MoveState, SupportItem } from './states'
 import { Character, CharacterActionsPlayer, Direction, Effect, Inventory, State } from '../types'
 
 import { Item } from '../../items'
-import { StateMachinePlugin } from '../../../plugins/state-machine/StateMachine.plugin'
 
 export class Hero extends Phaser.GameObjects.Sprite implements Character, CharacterActionsPlayer {
   life = {
@@ -18,7 +16,6 @@ export class Hero extends Phaser.GameObjects.Sprite implements Character, Charac
   inventory: Inventory
   direction: Direction
   state: State
-  private stateMachine: StateMachinePlugin
   public keys
   public config
   private _speed: number
@@ -44,27 +41,10 @@ export class Hero extends Phaser.GameObjects.Sprite implements Character, Charac
       pause: Phaser.Input.Keyboard.KeyCodes['P'],
     })
     this.speed = 100
-
-    /**
-     *  @TODO Find the way to implement plugin name property in Phaser.Scene namespace.
-     */
-    this.stateMachine = (scene as Phaser.Scene & { statemachine: StateMachinePlugin }).statemachine
-    this.stateMachine.init({
-      initial: 'idle',
-      states: {
-        idle: new IdleState(),
-        move: new MoveState(),
-        attack: new AttackState(),
-        activeItem: new ActiveItem(),
-        supportItem: new SupportItem(),
-      },
-      args: [this.scene, this],
-    })
   }
 
   preUpdate(time, delta) {
     super.preUpdate(time, delta)
-    this.stateMachine.step()
   }
 
   get speed(): number {
