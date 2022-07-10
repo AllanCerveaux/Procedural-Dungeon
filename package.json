@@ -1,0 +1,23 @@
+{
+  "name": "phaser-typescript-esbuild",
+  "version": "0.0.1",
+  "description": "phaser project template with esbuild",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "NODE_ENV=development node ./esbuild.config.mjs -w",
+    "build": "NODE_ENV=production node ./esbuild.config.mjs ",
+    "deploy": "yarn build && gh-pages -d dist"
+  },
+  "dependencies": {
+    "phaser": "^3.55.2"
+  },
+  "devDependencies": {
+    "@types/node": "^18.0.3",
+    "create-serve": "^1.0.1",
+    "esbuild": "^0.14.48",
+    "esbuild-plugin-copy": "^1.3.0",
+    "gh-pages": "^4.0.0",
+    "typescript": "^4.7.4"
+  }
+}
