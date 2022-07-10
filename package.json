@@ -7,7 +7,8 @@
   "scripts": {
     "start": "NODE_ENV=development node ./esbuild.config.mjs -w",
     "build": "NODE_ENV=production node ./esbuild.config.mjs ",
-    "deploy": "yarn build && gh-pages -d dist"
+    "predeploy": "yarn rimraf dist && yarn build",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "phaser": "^3.55.2"
