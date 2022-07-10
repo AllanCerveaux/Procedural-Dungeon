@@ -1,0 +1,1 @@
+# Phaser typescript esbuild template
