@@ -2,7 +2,7 @@ import { FPSText } from '@objects/debug'
 
 export class MainScene extends Phaser.Scene {
   fpsText: Phaser.GameObjects.Text
-  cube: Phaser.GameObjects.Rectangle
+
   constructor() {
     super({ key: 'main-scene' })
   }
