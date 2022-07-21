@@ -36,7 +36,7 @@ import { copy } from 'esbuild-plugin-copy';
   }).catch(() => process.exit(1))
   if (watcher) {
     server.start({
-      port: 1337,
+      port: process.env.PORT || 1337,
       root: './dist',
     })
   }
