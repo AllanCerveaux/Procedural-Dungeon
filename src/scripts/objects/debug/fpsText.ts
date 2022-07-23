@@ -12,15 +12,19 @@ export class FPSText extends Phaser.GameObjects.Text {
       y || 0,
       text || '',
       style || {
-        fontSize: '28px',
+        fontSize: '16px',
         color: 'black'
       }
     )
     scene.add.existing(this)
+    this.setDepth(0)
     this.setOrigin(0)
   }
 
   update() {
-    this.setText(`fps: ${Math.floor(this.scene.game.loop.actualFps)}`)
+    this.setText(`
+      fps: ${Math.floor(this.scene.game.loop.actualFps)}
+      scene: ${this.scene.scene.key}
+    `)
   }
 }
