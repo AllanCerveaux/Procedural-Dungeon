@@ -1,10 +1,13 @@
-import { DEFAULT_HEIGHT, DEFAULT_WIDTH } from './constants'
+import { DEFAULT_HEIGHT, DEFAULT_PHYSICS, DEFAULT_WIDTH } from './constants'
 
 import scenes from '@scenes/index'
 
 const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
   backgroundColor: '#ffffff',
+  fps: {
+    smoothStep: true
+  },
   render: {
     pixelArt: true
   },
@@ -21,8 +24,8 @@ const config: Phaser.Types.Core.GameConfig = {
     height: DEFAULT_HEIGHT
   },
   physics: {
-    default: 'arcade',
-    arcade: {
+    default: DEFAULT_PHYSICS,
+    [DEFAULT_PHYSICS]: {
       debug: process.env.NODE_ENV === 'development',
       gravity: { y: 0 }
     }
