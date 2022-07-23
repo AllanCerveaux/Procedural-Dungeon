@@ -17,8 +17,8 @@ import { copy } from 'esbuild-plugin-copy';
         resolveFrom: 'cwd',
         assets: [
           {
-            from: ['src/assets/*'],
-            to: ['dist/assets/*']
+            from: ['src/assets/**'],
+            to: ['dist/assets/**'],
           },
           {
             from: ['src/index.html'],
