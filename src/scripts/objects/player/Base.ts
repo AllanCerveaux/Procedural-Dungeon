@@ -87,7 +87,6 @@ export default class Base extends Phaser.GameObjects.Sprite {
     this.scene.time.addEvent({
       delay: 200,
       callback: () => {
-        console.log('die')
         this.freeze()
         this.anims.stop()
       }
