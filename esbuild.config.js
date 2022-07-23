@@ -30,7 +30,7 @@ import { copy } from 'esbuild-plugin-copy';
     watch: watcher && {
       onRebuild(err) {
         server.update()
-        err ? error('× Failed') : log('✓ Updated')
+        err ? error('× Failed', err) : log('✓ Updated')
       }
     }
   }).catch(() => process.exit(1))
