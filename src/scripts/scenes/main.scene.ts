@@ -12,7 +12,7 @@ export class MainScene extends Phaser.Scene {
 
   create() {
     this.fpsText = new FPSText(this)
-    this.player = new Base(this, DEFAULT_WIDTH / 2, DEFAULT_HEIGHT / 2, 'cube')
+    this.player = new Base(this, DEFAULT_WIDTH / 2, DEFAULT_HEIGHT / 2, { key: 'characters', name: 'knight_f' })
   }
 
   update(time: number, delta: number): void {

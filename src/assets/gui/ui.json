@@ -1,0 +1,37 @@
+{"frames": {
+
+"ui_heart_empty":
+{
+	"frame": {"x":1,"y":1,"w":15,"h":14},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":1,"w":15,"h":14},
+	"sourceSize": {"w":16,"h":16}
+},
+"ui_heart_full":
+{
+	"frame": {"x":20,"y":1,"w":15,"h":14},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":1,"w":15,"h":14},
+	"sourceSize": {"w":16,"h":16}
+},
+"ui_heart_half":
+{
+	"frame": {"x":1,"y":19,"w":15,"h":14},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":1,"w":15,"h":14},
+	"sourceSize": {"w":16,"h":16}
+}},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "ui.png",
+	"format": "RGBA8888",
+	"size": {"w":36,"h":36},
+	"scale": "1",
+	"normal_map": "ui_n.png",
+	"smartupdate": "$TexturePacker:SmartUpdate:c739ef57ce172fa9876a3030d18b5015:d0cb154dbaab6bd0d58d1ab27fef176c:4e31716c2e96e63246f6c178b8dbe0b7$"
+}
+}
