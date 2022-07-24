@@ -37,6 +37,11 @@ export default class Base extends Phaser.GameObjects.Sprite {
     this.body.setDamping(true)
 
     this.name = name
+    this.life = {
+      heart: 3,
+      max: 20,
+      extra: 0
+    }
   }
 
   protected preUpdate(time: number, delta: number): void {
