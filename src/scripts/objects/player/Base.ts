@@ -42,7 +42,6 @@ export default class Base extends Phaser.GameObjects.Sprite {
       max: 40,
       extra: 0
     }
-    console.log(this.speed, 100)
   }
 
   protected preUpdate(time: number, delta: number): void {
