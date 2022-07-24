@@ -4,7 +4,7 @@ import scenes from '@scenes/index'
 
 const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
-  backgroundColor: '#ffffff',
+  backgroundColor: '#1E1E1E',
   fps: {
     smoothStep: true
   },
