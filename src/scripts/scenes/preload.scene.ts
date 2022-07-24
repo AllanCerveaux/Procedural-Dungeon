@@ -1,6 +1,7 @@
 import { AnimationLoader, AssetsLoader } from '@utils/loaders'
 
 import { SCENES } from '@constants'
+
 export class PreloadScene extends Phaser.Scene {
   constructor(private assetsLoader: AssetsLoader, private animationLoader: AnimationLoader) {
     super({ key: SCENES.PRELOAD })
@@ -13,6 +14,6 @@ export class PreloadScene extends Phaser.Scene {
   }
   create() {
     this.animationLoader.init()
-    this.scene.start('main-scene')
+    this.scene.start(SCENES.MAIN)
   }
 }
