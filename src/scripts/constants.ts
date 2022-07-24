@@ -20,3 +20,8 @@ export enum SCENES {
   MAIN = 'main-scene',
   GAME_OVER = 'game-over-scene'
 }
+
+export enum OVERLAY {
+  HUD = 'hud-overlay',
+  MAP = 'map-overlay'
+}
