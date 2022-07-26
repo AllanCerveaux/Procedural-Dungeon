@@ -52,8 +52,24 @@ export class HUDScene extends Phaser.Scene {
   }
 
   addHeart(isExtra: boolean = false, state?: number) {
-    const x = (this.life_bar.at(-1)?.x || 0) >= 150 ? 30 : (this.life_bar.at(-1)?.x || 0) + 30
-    const y = (this.life_bar.at(-1)?.x || 0) >= 150 ? 50 : this.life_bar.at(-1)?.y || 20
+    if (this.life_bar.length * 2 >= this.life.max) return
+    const { hearts, extra } = this.hearts()
+    let x, y
+    if (!isExtra) {
+      x = (hearts.at(-1)?.x || 0) >= 150 ? 30 : (hearts.at(-1)?.x || 0) + 30
+      y = (hearts.at(-1)?.x || 0) >= 150 ? 50 : hearts.at(-1)?.y || 20
+      for (let i = 0; i < extra.length; i++) {
+        if ((extra[i].x >= 150 || x >= 150) && extra[i].y === 20) {
+          extra[i].x = 30
+          extra[i].y = 50
+        } else {
+          extra[i].x += 30
+        }
+      }
+    } else {
+      x = (this.life_bar.at(-1)?.x || 0) >= 150 ? 30 : (this.life_bar.at(-1)?.x || 0) + 30
+      y = (this.life_bar.at(-1)?.x || 0) >= 150 ? 50 : this.life_bar.at(-1)?.y || 20
+    }
     this.life_bar.push(new Heart(this, x, y, isExtra, state))
   }
 
@@ -62,19 +78,15 @@ export class HUDScene extends Phaser.Scene {
     let rmElm = !isExtra ? hearts.at(-1) : extra.at(-1)
 
     if (rmElm) {
-      if (!rmElm.isExtra) this.rePosHearts()
+      if (!rmElm.isExtra) {
+        for (let i = extra.length - 1; i >= 0; i--) {
+          extra[i].x = i - 1 < 0 ? rmElm.x : this.life_bar[i - 1].x
+          extra[i].y = i - 1 < 0 ? rmElm.y : this.life_bar[i - 1].y
+        }
+      }
       rmElm.destroy()
       const rmElmIndex = this.life_bar.indexOf(rmElm)
       this.life_bar = [...this.life_bar.filter((_, i) => i !== rmElmIndex)]
-    }
-  }
-
-  rePosHearts() {
-    for (let i = this.life_bar.length - 1; i >= 0; i--) {
-      if (i - 1 >= 0) {
-        this.life_bar[i].x = this.life_bar[i - 1].x
-        this.life_bar[i].y = this.life_bar[i - 1].y
-      }
     }
   }
 
