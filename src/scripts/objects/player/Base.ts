@@ -39,7 +39,7 @@ export default class Base extends Phaser.GameObjects.Sprite {
     this.name = name
     this.life = {
       heart: 6,
-      max: 40,
+      max: 20,
       extra: 0
     }
   }
