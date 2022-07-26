@@ -1,7 +1,7 @@
 export class Heart extends Phaser.GameObjects.Sprite {
   declare state: number
   isExtra: boolean
-  constructor(scene: Phaser.Scene, x: number, y: number, isExtra: boolean = false) {
+  constructor(scene: Phaser.Scene, x: number, y: number, isExtra: boolean = false, state: number = 2) {
     super(scene, x, y, 'ui')
     scene.add.existing(this)
     this.setScale(2)
@@ -9,7 +9,7 @@ export class Heart extends Phaser.GameObjects.Sprite {
     if (isExtra) {
       this.setTint(0xc00baff)
     }
-    this.state = 2
+    this.state = state
   }
 
   protected preUpdate(time: number, delta: number): void {
