@@ -1,9 +1,8 @@
-import { HEART, OVERLAY } from '@constants'
-
 import { Heart } from '@objects/hud/heart'
+import { OVERLAY } from '@constants'
 
 export class HUDScene extends Phaser.Scene {
-  life_bar: Heart[]
+  life_bar: Phaser.GameObjects.Container
   life: {
     heart: number
     extra: number
@@ -18,136 +17,106 @@ export class HUDScene extends Phaser.Scene {
   increase_key: any
   constructor() {
     super({ key: OVERLAY.HUD })
-    this.life_bar = []
   }
 
   create({ life }) {
     this.life = life
-    this.generateLifeBar()
+    this.life_bar = this.add.container(30, 20)
     this.heart_key = this.input.keyboard.addKey('d')
     this.remove_heart = this.input.keyboard.addKey('f')
     this.extra_key = this.input.keyboard.addKey('e')
     this.remove_extra = this.input.keyboard.addKey('r')
     this.decrease_key = this.input.keyboard.addKey('z')
     this.increase_key = this.input.keyboard.addKey('a')
+
+    this.generateLifeBar()
+    // ;(this.life_bar.getAll('isExtra', false).at(-1) as Heart).state = 1
+    // ;(this.life_bar.getAll('isExtra', true).at(-1) as Heart).state = 1
   }
 
   update(time: number, delta: number): void {
     if (Phaser.Input.Keyboard.JustDown(this.heart_key)) {
-      this.addHeart(false, HEART.FULL)
-      console.log(this.life_bar)
+      this.addHeart()
+      console.log('add heart', this.life_bar.list)
     }
     if (Phaser.Input.Keyboard.JustDown(this.extra_key)) {
-      this.addHeart(true, HEART.FULL)
-      console.log(this.life_bar)
+      this.addHeart(true)
+      console.log('add extra heart', this.life_bar.list)
     }
     if (Phaser.Input.Keyboard.JustDown(this.remove_heart)) {
-      this.removeHeart()
-      console.log(this.life_bar)
+      console.log('remove heart', this.life_bar.list)
     }
     if (Phaser.Input.Keyboard.JustDown(this.remove_extra)) {
-      this.removeHeart(true)
-      console.log(this.life_bar)
+      console.log('add extra heart', this.life_bar.list)
     }
 
     if (Phaser.Input.Keyboard.JustDown(this.decrease_key)) {
-      this.lifeDown()
-      console.log(this.life_bar)
+      console.log('decrease heart', this.life_bar.list)
     }
     if (Phaser.Input.Keyboard.JustDown(this.increase_key)) {
-      this.lifeUp()
-      console.log(this.life_bar)
+      console.log('decrease heart', this.life_bar.list)
     }
   }
-
   generateLifeBar() {
-    for (let i = 2; i <= this.life.heart; i += 2) this.addHeart()
-    for (let i = 2; i <= this.life.extra; i += 2) this.addHeart(true)
+    const total_of_hearts = this.life.heart + this.life.extra
+    let x = this.life_bar.x
+    let y = this.life_bar.y
+    for (let i = 2; i <= total_of_hearts; i += 2) {
+      const isExtra = i > this.life.heart
+      const last_item = this.life_bar.last as Heart
+
+      if (last_item) {
+        const { pX, pY } = this.calcPos(x, y)
+        x = pX
+        y = pY
+      }
+      this.life_bar.add(new Heart(this, x, y, isExtra))
+    }
   }
 
-  addHeart(isExtra: boolean = false, state?: number) {
-    const { hearts, extra } = this.hearts()
+  addHeart(isExtra: boolean = false) {
     let x, y
-    const half_hearts = !isExtra ? hearts.find(({ state }) => state < 2) : extra.find(({ state }) => state < 2)
-    if (!isExtra && extra.length > 0 && this.life_bar.length * 2 >= this.life.max) this.removeHeart(true)
+    const last_item = this.life_bar.last as Heart
+    const first_extra = this.life_bar.getFirst('isExtra', true) as Heart
+    if (!isExtra && last_item && last_item.isExtra && this.life_bar.length * 2 >= this.life.max) {
+      console.log('delete extra heart')
+    }
     if (this.life_bar.length * 2 >= this.life.max) return
-
-    // @TODO: CAN REFACTO
-    if (!isExtra) {
-      x = (hearts.at(-1)?.x || 0) >= 150 ? 30 : (hearts.at(-1)?.x || 0) + 30
-      y = (hearts.at(-1)?.x || 0) >= 150 ? 50 : hearts.at(-1)?.y || 20
-      for (let i = 0; i < extra.length; i++) {
-        if ((extra[i].x >= 150 || x >= 150) && extra[i].y === 20) {
-          extra[i].x = 30
-          extra[i].y = 50
-        } else {
-          extra[i].x += 30
-        }
+    const half_heart = Phaser.Utils.Array.GetFirst(this.life_bar.getAll('isExtra', isExtra), 'state', 1) as Heart
+    if (!isExtra && first_extra) {
+      this.life_bar.add(
+        new Heart(this, half_heart ? half_heart.x : first_extra.x, half_heart ? half_heart.y : first_extra.y, isExtra)
+      )
+      if (half_heart) {
+        half_heart.x = first_extra.x
+        half_heart.y = first_extra.y
       }
+      this.life_bar.moveBelow(this.life_bar.last, half_heart || (this.life_bar.getAll('isExtra', true) as Heart[])[0])
+      this.rePositioningExtraHeart()
     } else {
-      x = (this.life_bar.at(-1)?.x || 0) >= 150 ? 30 : (this.life_bar.at(-1)?.x || 0) + 30
-      y = (this.life_bar.at(-1)?.x || 0) >= 150 ? 50 : this.life_bar.at(-1)?.y || 20
-    }
-
-    if (half_hearts && half_hearts.state < 2) {
-      x = half_hearts.x
-      y = half_hearts.y
-      half_hearts.x = x >= 150 ? 30 : half_hearts.x + 30
-      half_hearts.y = x >= 150 ? 50 : half_hearts.y
-    }
-
-    this.life_bar.push(new Heart(this, x, y, isExtra, state))
-  }
-
-  removeHeart(isExtra: boolean = false) {
-    const { hearts, extra } = this.hearts()
-    let rmElm = !isExtra ? hearts.at(-1) : extra.find(({ state }) => state < 2) || extra.at(-1)
-    if (rmElm) {
-      if (!rmElm.isExtra) {
-        for (let i = extra.length - 1; i >= 0; i--) {
-          extra[i].x = i - 1 < 0 ? rmElm.x : extra[i - 1].x
-          extra[i].y = i - 1 < 0 ? rmElm.y : extra[i - 1].y
-        }
+      const { pX, pY } = this.calcPos(last_item.x, last_item.y)
+      this.life_bar.add(new Heart(this, half_heart ? half_heart.x : pX, half_heart ? half_heart.y : pY, isExtra))
+      if (half_heart) {
+        half_heart.x = pX
+        half_heart.y = pY
+        this.life_bar.moveBelow(this.life_bar.last, half_heart)
       }
-      rmElm.destroy()
-      const rmElmIndex = this.life_bar.indexOf(rmElm)
-      this.life_bar = [...this.life_bar.filter((_, i) => i !== rmElmIndex)]
     }
   }
 
-  lifeDown() {
-    const { hearts, extra } = this.hearts()
-    const last_extra = extra.at(-1)
-    if (last_extra) {
-      last_extra.decreaseState()
-      if (last_extra.isEmpty()) this.removeHeart(true)
-    } else {
-      hearts
-        .filter(heart => !heart.isEmpty())
-        .at(-1)
-        ?.decreaseState()
-    }
+  rePositioningExtraHeart() {
+    const extra_hearts = this.life_bar.getAll('isExtra', true) as Heart[]
+    extra_hearts.forEach((extra: Heart) => {
+      const { pX, pY } = this.calcPos(extra.x, extra.y)
+      extra.x = pX
+      extra.y = pY
+    })
   }
 
-  lifeUp() {
-    const { hearts, extra } = this.hearts()
-    if (extra.length > 0) {
-      extra
-        .filter(extra => extra.state === HEART.HALF)
-        .at(0)
-        ?.increaseState()
-    } else {
-      hearts
-        .filter(heart => heart.isEmpty() || heart.state === HEART.HALF)
-        .at(0)
-        ?.increaseState()
-    }
-  }
-
-  hearts() {
+  calcPos(x, y) {
     return {
-      hearts: this.life_bar.filter(({ isExtra }) => !isExtra),
-      extra: this.life_bar.filter(({ isExtra }) => isExtra)
+      pX: x >= 150 ? 30 : x + 30,
+      pY: x >= 150 ? 50 : y
     }
   }
 }
