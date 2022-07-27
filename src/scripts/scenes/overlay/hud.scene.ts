@@ -68,7 +68,7 @@ export class HUDScene extends Phaser.Scene {
   addHeart(isExtra: boolean = false, state?: number) {
     const { hearts, extra } = this.hearts()
     let x, y
-
+    const half_hearts = !isExtra ? hearts.find(({ state }) => state < 2) : extra.find(({ state }) => state < 2)
     if (!isExtra && extra.length > 0 && this.life_bar.length * 2 >= this.life.max) this.removeHeart(true)
     if (this.life_bar.length * 2 >= this.life.max) return
 
@@ -89,13 +89,19 @@ export class HUDScene extends Phaser.Scene {
       y = (this.life_bar.at(-1)?.x || 0) >= 150 ? 50 : this.life_bar.at(-1)?.y || 20
     }
 
+    if (half_hearts && half_hearts.state < 2) {
+      x = half_hearts.x
+      y = half_hearts.y
+      half_hearts.x = x >= 150 ? 30 : half_hearts.x + 30
+      half_hearts.y = x >= 150 ? 50 : half_hearts.y
+    }
+
     this.life_bar.push(new Heart(this, x, y, isExtra, state))
   }
 
   removeHeart(isExtra: boolean = false) {
     const { hearts, extra } = this.hearts()
-    let rmElm = !isExtra ? hearts.at(-1) : extra.at(-1)
-
+    let rmElm = !isExtra ? hearts.at(-1) : extra.find(({ state }) => state < 2) || extra.at(-1)
     if (rmElm) {
       if (!rmElm.isExtra) {
         for (let i = extra.length - 1; i >= 0; i--) {
