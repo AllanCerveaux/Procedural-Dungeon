@@ -99,8 +99,8 @@ export class HUDScene extends Phaser.Scene {
     if (rmElm) {
       if (!rmElm.isExtra) {
         for (let i = extra.length - 1; i >= 0; i--) {
-          extra[i].x = i - 1 < 0 ? rmElm.x : this.life_bar[i - 1].x
-          extra[i].y = i - 1 < 0 ? rmElm.y : this.life_bar[i - 1].y
+          extra[i].x = i - 1 < 0 ? rmElm.x : extra[i - 1].x
+          extra[i].y = i - 1 < 0 ? rmElm.y : extra[i - 1].y
         }
       }
       rmElm.destroy()
