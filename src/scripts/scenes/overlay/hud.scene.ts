@@ -1,5 +1,6 @@
+import { HEART, OVERLAY } from '@constants'
+
 import { Heart } from '@objects/hud/heart'
-import { OVERLAY } from '@constants'
 
 export class HUDScene extends Phaser.Scene {
   life_bar: Phaser.GameObjects.Container
@@ -30,7 +31,6 @@ export class HUDScene extends Phaser.Scene {
     this.increase_key = this.input.keyboard.addKey('a')
 
     this.generateLifeBar()
-    ;(this.life_bar.getAll('isExtra', true).at(-1) as Heart).state = 1
   }
 
   update(time: number, delta: number): void {
@@ -52,12 +52,14 @@ export class HUDScene extends Phaser.Scene {
     }
 
     if (Phaser.Input.Keyboard.JustDown(this.decrease_key)) {
+      this.decreaseHeartState()
       console.log('decrease heart', this.life_bar.list)
     }
     if (Phaser.Input.Keyboard.JustDown(this.increase_key)) {
       console.log('decrease heart', this.life_bar.list)
     }
   }
+
   generateLifeBar() {
     const total_of_hearts = this.life.heart + this.life.extra
     let x = this.life_bar.x
@@ -109,6 +111,28 @@ export class HUDScene extends Phaser.Scene {
         arr_extra[i].x = arr_extra[i].x - 30 <= 0 ? 150 : arr_extra[i].x - 30
         arr_extra[i].y = arr_extra[i].x === 150 ? 20 : arr_extra[i].y
       }
+    }
+  }
+
+  decreaseHeartState() {
+    let last_heart = this.life_bar.last as Heart
+    if (last_heart.isEmpty()) {
+      const hearts = this.life_bar.getAll()
+      for (let i = 0; i <= hearts.length; i++) {
+        const heart = this.life_bar.getAt(this.life_bar.getIndex(last_heart) - i) as Heart
+        if (!heart) return
+        if (heart.state === HEART.HALF) {
+          heart.decreaseState()
+          return
+        } else if (heart.state === HEART.FULL) {
+          heart.decreaseState()
+          return
+        }
+      }
+    }
+    last_heart.decreaseState()
+    if (last_heart.isExtra && last_heart.isEmpty()) {
+      this.removeHeart(last_heart.isExtra)
     }
   }
 
