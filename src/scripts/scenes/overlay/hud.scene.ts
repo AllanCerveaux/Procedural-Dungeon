@@ -52,11 +52,11 @@ export class HUDScene extends Phaser.Scene {
     }
 
     if (Phaser.Input.Keyboard.JustDown(this.decrease_key)) {
-      this.lifebar.damage()
+      this.lifebar.damage(1, false)
       console.log('decrease heart', this.lifebar.list)
     }
     if (Phaser.Input.Keyboard.JustDown(this.increase_key)) {
-      this.lifebar.heal()
+      this.lifebar.heal(1, true)
       console.log('decrease heart', this.lifebar.list)
     }
   }
