@@ -34,14 +34,14 @@ export class Heart extends Phaser.GameObjects.Sprite {
   /**
    * If the state is less than 2, increase the state by 1
    */
-  increaseState() {
-    this.state < 2 ? (this.state += 1) : null
+  increaseState(cost: number = 1) {
+    this.state < 2 ? (this.state += cost) : null
   }
 
   /**
    * If the state is greater than 0, decrease the state by 1
    */
-  decreaseState() {
-    this.state > 0 ? (this.state -= 1) : null
+  decreaseState(cost: number = 1) {
+    this.state > 0 ? (this.state -= cost) : null
   }
 }
