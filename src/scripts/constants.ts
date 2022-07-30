@@ -25,3 +25,9 @@ export enum OVERLAY {
   HUD = 'hud-overlay',
   MAP = 'map-overlay'
 }
+
+export enum HEART {
+  EMPTY,
+  HALF,
+  FULL
+}
