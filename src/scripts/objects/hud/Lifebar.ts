@@ -3,10 +3,18 @@ import { Heart } from './Heart'
 
 export class Lifebar extends Phaser.GameObjects.Container {
   grid: Phaser.GameObjects.GameObject[]
-  constructor(scene: Phaser.Scene, x: number, y: number, { max }) {
+  constructor(scene: Phaser.Scene, x: number, y: number, life: { heart: number; extra: number; max: number }) {
     super(scene, x, y)
-    this.maxSize = max / 2
+    this.maxSize = life.max / 2
     this.scene.add.existing(this)
+    this.generate(life.heart, life.extra)
+  }
+
+  generate(heart: number, extra: number) {
+    for (let i = 2; i <= heart + extra; i += 2) {
+      const isExtra = i > heart
+      this.health_up(isExtra)
+    }
   }
 
   update(time: number, delta: number): void {
@@ -45,7 +53,7 @@ export class Lifebar extends Phaser.GameObjects.Container {
 
   heal(cost: number = 1, isExtra: boolean = false) {
     let first_heart = this.first as Heart
-    while (first_heart.state === HEART.FULL) {
+    while (first_heart.isExtra !== isExtra || first_heart.state === HEART.FULL) {
       first_heart = this.next as Heart
       if (!first_heart) return
     }
@@ -54,7 +62,7 @@ export class Lifebar extends Phaser.GameObjects.Container {
 
   damage(cost: number = 1, isExtra: boolean = false) {
     let last_heart = this.last as Heart
-    while (last_heart.isEmpty()) {
+    while (last_heart.isExtra !== isExtra || last_heart.isEmpty()) {
       last_heart = this.previous as Heart
       if (!last_heart) return
     }
