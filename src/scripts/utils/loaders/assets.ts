@@ -2,12 +2,12 @@ export class AssetsLoader {
   constructor(private scene: Phaser.Scene) {}
 
   public init(): void {
-    this.loadTilesets()
+    // this.loadTilesets()
     this.loadCharacters()
-    this.loadObjects()
+    // this.loadObjects()
     this.loadUI()
     this.loadGui()
-    this.loadSong()
+    // this.loadSong()
   }
   private loadAtlas(key: string): Phaser.Loader.LoaderPlugin {
     return this.scene.load.atlas(key, [`${key}.png`, `${key}_n.png`], `${key}.json`)
