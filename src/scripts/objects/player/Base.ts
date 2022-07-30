@@ -1,9 +1,13 @@
 import { DEFAULT_INPUT_KEYS } from '../../constants'
 import { Dic } from '@types'
 import { Effect } from './type'
+import { MainScene } from '@scenes/main.scene'
+import { emitter } from '../../utils/events'
 
 export default class Base extends Phaser.GameObjects.Sprite {
+  declare scene: MainScene
   declare body: Phaser.Physics.Arcade.Body
+
   keys: Dic<Phaser.Input.Keyboard.Key>
   name: string
   speed: number
@@ -17,7 +21,6 @@ export default class Base extends Phaser.GameObjects.Sprite {
   defense_cost: number
   luck: number
   effect: Effect[]
-
   constructor(
     scene: Phaser.Scene,
     x: number,
@@ -25,7 +28,8 @@ export default class Base extends Phaser.GameObjects.Sprite {
     { key, name, max_speed = 200 }: { key: string; name: string; max_speed?: number }
   ) {
     super(scene, x, y, key)
-    scene.add.existing(this)
+
+    this.scene.add.existing(this)
     this.scene.physics.add.existing(this)
     this.setFrame(`${name}_idle_anim_f0`)
     this.anims.play(`${name}_idle`)
@@ -42,6 +46,11 @@ export default class Base extends Phaser.GameObjects.Sprite {
       max: 20,
       extra: 0
     }
+
+    emitter.on('total_of_heart', ({ heart, extra }: { heart: number; extra: number }) => {
+      this.life.heart = heart
+      this.life.extra = extra
+    })
   }
 
   protected preUpdate(time: number, delta: number): void {
@@ -65,7 +74,7 @@ export default class Base extends Phaser.GameObjects.Sprite {
     this.body.setAcceleration(horizontal_axe * (this.speed * 0.25) * delta, vertical_axe * (this.speed * 0.25) * delta)
   }
 
-  hit(atk_cost: number) {
+  hit(cost: number) {
     this.anims.play(`${this.name}_hit`, true)
     this.setTint(0xff0000)
     this.knockback()
@@ -76,12 +85,11 @@ export default class Base extends Phaser.GameObjects.Sprite {
       }
     })
 
+    const isExtra = this.life.extra > 0
+
+    emitter.emit('damage', cost, isExtra)
+
     if (this.life.heart < 1 && this.life.extra < 1) this.die()
-
-    const damage_reduction = atk_cost - this.defense_cost
-
-    if (this.life.extra > 0) this.life.extra = this.life.extra - (atk_cost - damage_reduction)
-    else this.life.heart = this.life.heart - (atk_cost - damage_reduction)
   }
 
   knockback(force: number = 100) {
