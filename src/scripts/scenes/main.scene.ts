@@ -3,6 +3,7 @@ import { DEFAULT_HEIGHT, DEFAULT_WIDTH, OVERLAY, SCENES } from '@constants'
 import { FPSText } from '@objects/debug'
 import { HUDScene } from './overlay/hud.scene'
 import { Knight } from '@objects/heroes/Knight'
+import { emitter } from '../utils/events'
 
 export class MainScene extends Phaser.Scene {
   hud: Phaser.Scene
@@ -21,6 +22,11 @@ export class MainScene extends Phaser.Scene {
     this.cameras.main.startFollow(this.player)
 
     this.hud = this.scene.add(OVERLAY.HUD, HUDScene, true, { life: this.player.life })
+
+    emitter.on('game_over', () => {
+      this.hud.scene.remove()
+      this.scene.restart()
+    })
   }
 
   update(time: number, delta: number): void {

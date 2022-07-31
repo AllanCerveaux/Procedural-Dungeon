@@ -55,6 +55,8 @@ export default class Base extends Phaser.GameObjects.Sprite {
 
   protected preUpdate(time: number, delta: number): void {
     super.preUpdate(time, delta)
+    if (this.life.heart < 1 && this.life.extra < 1) this.die()
+
     if (this.speed > this.body.maxSpeed) this.speed = this.body.maxSpeed
 
     const horizontal_axe = this.keys.left.isDown ? -1 : this.keys.right.isDown ? 1 : 0
@@ -88,8 +90,6 @@ export default class Base extends Phaser.GameObjects.Sprite {
     const isExtra = this.life.extra > 0
 
     emitter.emit('damage', cost, isExtra)
-
-    if (this.life.heart < 1 && this.life.extra < 1) this.die()
   }
 
   knockback(force: number = 100) {
@@ -109,6 +109,7 @@ export default class Base extends Phaser.GameObjects.Sprite {
         this.anims.stop()
       }
     })
+    emitter.emit('game_over')
   }
 
   freeze(value: boolean = false) {
