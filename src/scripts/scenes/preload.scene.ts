@@ -1,6 +1,7 @@
 import { AnimationLoader, AssetsLoader } from '@utils/loaders'
 
 import { SCENES } from '@constants'
+import WebFontFile from '../utils/font-loader'
 
 export class PreloadScene extends Phaser.Scene {
   progress_bar: Phaser.GameObjects.Graphics
@@ -16,8 +17,10 @@ export class PreloadScene extends Phaser.Scene {
   }
 
   preload() {
+    this.load.addFile(new WebFontFile(this.load, 'Press Start 2P'))
     this.load.image('cube', 'cube_test.png')
     this.assetsLoader.init()
+
     this.progress_bar = this.add.graphics()
     this.progress_box = this.add.graphics()
 
