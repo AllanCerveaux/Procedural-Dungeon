@@ -1,18 +1,21 @@
 import { DEFAULT_HEIGHT, DEFAULT_WIDTH, OVERLAY, SCENES } from '@constants'
 
+import { Elf } from '@objects/heroes/Elf'
 import { HUDScene } from './overlay/hud.scene'
 import { Knight } from '@objects/heroes/Knight'
-import { emitter } from '../utils/events'
+import { Lizard } from '@objects/heroes/Lizard'
+import { Wizard } from '@objects/heroes/Wizard'
+import { emitter } from '@utils/events'
 
 export class MainScene extends Phaser.Scene {
   hud: Phaser.Scene
-  player: Knight
+  player: Knight | Wizard | Elf | Lizard
   constructor() {
     super({ key: SCENES.MAIN })
   }
 
   create() {
-    this.player = new Knight(this, DEFAULT_WIDTH / 2, DEFAULT_HEIGHT / 2, 'f')
+    this.player = new Lizard(this, DEFAULT_WIDTH / 2, DEFAULT_HEIGHT / 2, 'f')
 
     this.cameras.main.setZoom(2)
     this.cameras.main.startFollow(this.player)
