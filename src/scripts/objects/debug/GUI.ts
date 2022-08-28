@@ -1,16 +1,17 @@
 import * as EssentialsPlugin from '@tweakpane/plugin-essentials'
 
 import { Pane } from 'tweakpane'
-import { emitter } from '../../utils/events'
+import Player from "@objects/player/Player";
 
-export function DebugGUI() {
+export function DebugGUI(player: Player) {
   const pane = new Pane({
     title: 'Procedural Dungeon Debug'
   })
-  PlayerGUI(pane)
+  
+  PlayerGUI(pane, player)
 }
 
-function PlayerGUI(pane: Pane) {
+function PlayerGUI(pane: Pane, player: Player) {
   pane.registerPlugin(EssentialsPlugin)
   const folder = pane.addFolder({
     title: 'Player'
@@ -35,10 +36,10 @@ function PlayerGUI(pane: Pane) {
     })
     .on('click', ({ index }) => {
       const [x, y] = index
-      if (x === 0 && y === 0) emitter.emit('health_up', false)
-      if (x === 0 && y === 1) emitter.emit('health_down', false)
-      if (x === 1 && y === 0) emitter.emit('health_up', true)
-      if (x === 1 && y === 1) emitter.emit('health_down', true)
+      if (x === 0 && y === 0) player.health_up(false)
+      if (x === 0 && y === 1) player.health_down(false)
+      if (x === 1 && y === 0) player.health_up(true)
+      if (x === 1 && y === 1) player.health_down(true)
     })
   life_controller
     .addBlade({
@@ -51,9 +52,9 @@ function PlayerGUI(pane: Pane) {
     })
     .on('click', ({ index }) => {
       const [x, y] = index
-      if (x === 0 && y === 0) emitter.emit('heal', 1, false)
-      if (x === 0 && y === 1) emitter.emit('damage', 1, false)
-      if (x === 1 && y === 0) emitter.emit('heal', 1, true)
-      if (x === 1 && y === 1) emitter.emit('damage', 1, true)
+      if (x === 0 && y === 0) player.take_heal(1, 'heart')
+      if (x === 0 && y === 1) player.take_damage(1, 'heart')
+      if (x === 1 && y === 0) player.take_heal(1, 'extra')
+      if (x === 1 && y === 1) player.take_damage(1, 'extra')
     })
 }

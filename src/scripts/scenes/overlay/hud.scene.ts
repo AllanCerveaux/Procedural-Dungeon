@@ -2,6 +2,7 @@ import { DebugGUI } from '@objects/debug/GUI'
 import { FPSText } from '@objects/debug/fpsText'
 import { Lifebar } from '@objects/hud/Lifebar'
 import { OVERLAY } from '@constants'
+import Player from "@objects/player/Player";
 export class HUDScene extends Phaser.Scene {
   lifebar: Lifebar
   fps_text: FPSText
@@ -9,10 +10,10 @@ export class HUDScene extends Phaser.Scene {
     super({ key: OVERLAY.HUD })
   }
 
-  create({ life }) {
-    this.lifebar = new Lifebar(this, 0, 0, life)
+  create({ player }: {player: Player}) {
+    this.lifebar = new Lifebar(this, 0, 0, player.life)
     this.fps_text = new FPSText(this, this.cameras.main.width - 240, 0)
-    if (process.env.NODE_ENV === 'development') DebugGUI()
+    if (process.env.NODE_ENV === 'development') DebugGUI(player)
   }
 
   update(time: number, delta: number): void {

@@ -15,12 +15,12 @@ export class MainScene extends Phaser.Scene {
   }
 
   create() {
-    this.player = new Lizard(this, DEFAULT_WIDTH / 2, DEFAULT_HEIGHT / 2, 'f')
+    this.player = new Knight(this, DEFAULT_WIDTH / 2, DEFAULT_HEIGHT / 2, 'f')
 
     this.cameras.main.setZoom(2)
     this.cameras.main.startFollow(this.player)
-
-    this.hud = this.scene.add(OVERLAY.HUD, HUDScene, true, { life: this.player.life })
+    
+    this.hud = this.scene.add(OVERLAY.HUD, HUDScene, true, { player: this.player })
 
     emitter.on('game_over', () => {
       this.hud.scene.remove()
