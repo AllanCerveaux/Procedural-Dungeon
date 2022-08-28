@@ -1,5 +1,5 @@
 import Base from './Base'
-import { emitter } from '@utils/events'
+import { PlayerEmitter } from '@utils/events'
 import { PLAYER_EMITTER } from "@objects/player/type";
 import { LIFEBAR_EMITTER } from "@objects/hud/Lifebar";
 
@@ -9,10 +9,10 @@ export default class Player extends Base {
     this.name = name
     this.max_speed = max_speed
     
-    emitter.on(PLAYER_EMITTER.DAMAGE, (cost: number, isExtra: boolean) => this.hit(cost, isExtra ? 'extra' : 'heart'))
-    emitter.on(PLAYER_EMITTER.HEAL, (cost: number, isExtra: boolean) => this.heal(cost, isExtra ? 'extra' : 'heart'))
-    emitter.on(PLAYER_EMITTER.HEALTH_UP, (type: 'extra' | 'heart') => this.life[type] += 2)
-    emitter.on(PLAYER_EMITTER.HEALTH_DOWN, (type: 'extra' | 'heart') => this.life[type] -= 2)
+    PlayerEmitter.on(PLAYER_EMITTER.DAMAGE, (cost: number, isExtra: boolean) => this.hit(cost, isExtra ? 'extra' : 'heart'))
+    PlayerEmitter.on(PLAYER_EMITTER.HEAL, (cost: number, isExtra: boolean) => this.heal(cost, isExtra ? 'extra' : 'heart'))
+    PlayerEmitter.on(PLAYER_EMITTER.HEALTH_UP, (type: 'extra' | 'heart') => this.life[type] += 2)
+    PlayerEmitter.on(PLAYER_EMITTER.HEALTH_DOWN, (type: 'extra' | 'heart') => this.life[type] -= 2)
   }
 
   protected preUpdate(time: number, delta: number): void {
@@ -21,22 +21,22 @@ export default class Player extends Base {
   }
 
   take_damage(cost: number, damage_type: 'extra' | 'heart') {
-    emitter.emit(LIFEBAR_EMITTER.DAMAGE, cost, damage_type === 'extra')
+    PlayerEmitter.emit(LIFEBAR_EMITTER.DAMAGE, cost, damage_type === 'extra')
   }
   
   take_heal(cost: number, heal_type: 'extra' | 'heart') {
-    emitter.emit(LIFEBAR_EMITTER.HEAL, cost, heal_type === 'extra')
+    PlayerEmitter.emit(LIFEBAR_EMITTER.HEAL, cost, heal_type === 'extra')
   }
   
   health_up(isExtra: boolean) {
-    emitter.emit(LIFEBAR_EMITTER.HEALTH_UP, isExtra)
+    PlayerEmitter.emit(LIFEBAR_EMITTER.HEALTH_UP, isExtra)
   }
   
   health_down(isExtra: boolean) {
-    emitter.emit(LIFEBAR_EMITTER.HEALTH_DOWN, isExtra)
+    PlayerEmitter.emit(LIFEBAR_EMITTER.HEALTH_DOWN, isExtra)
   }
   
   game_over() {
-    emitter.emit('game_over')
+    PlayerEmitter.emit('game_over')
   }
 }

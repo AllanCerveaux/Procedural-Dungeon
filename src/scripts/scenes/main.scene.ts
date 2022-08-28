@@ -5,7 +5,7 @@ import { HUDScene } from './overlay/hud.scene'
 import { Knight } from '@objects/heroes/Knight'
 import { Lizard } from '@objects/heroes/Lizard'
 import { Wizard } from '@objects/heroes/Wizard'
-import { emitter } from '@utils/events'
+import { PlayerEmitter } from '@utils/events'
 
 export class MainScene extends Phaser.Scene {
   hud: Phaser.Scene
@@ -22,7 +22,7 @@ export class MainScene extends Phaser.Scene {
     
     this.hud = this.scene.add(OVERLAY.HUD, HUDScene, true, { player: this.player })
 
-    emitter.on('game_over', () => {
+    PlayerEmitter.on('game_over', () => {
       this.hud.scene.remove()
       this.scene.restart()
     })
