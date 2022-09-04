@@ -31,7 +31,7 @@ export class Lifebar extends Phaser.GameObjects.Container {
     }
   }
 
-  update(time: number, delta: number): void {
+  update() {
     this.grid = Phaser.Actions.GridAlign(this.list, {
       width: 5,
       height: 2,

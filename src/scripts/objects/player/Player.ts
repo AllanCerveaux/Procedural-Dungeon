@@ -2,6 +2,7 @@ import Base from './Base'
 import { PlayerEmitter } from '@utils/events'
 import { PLAYER_EMITTER } from "@objects/player/type";
 import { LIFEBAR_EMITTER } from "@objects/hud/Lifebar";
+import {STATS_EMITTER} from "@objects/hud/Stats";
 
 export default class Player extends Base {
   constructor(scene: Phaser.Scene, x: number, y: number, { key, name, max_speed }: { key: string; name: string; max_speed: number }) {
@@ -34,6 +35,15 @@ export default class Player extends Base {
   
   health_down(isExtra: boolean) {
     PlayerEmitter.emit(LIFEBAR_EMITTER.HEALTH_DOWN, isExtra)
+  }
+  
+  stat_update(state: 'up' | 'down', name: string, cost: number) {
+    if(state === 'up') {
+      this[name] += cost
+    }else {
+      this[name] -= cost
+    }
+    PlayerEmitter.emit(STATS_EMITTER.STATS_CHANGE, state, name, this[name])
   }
   
   game_over() {

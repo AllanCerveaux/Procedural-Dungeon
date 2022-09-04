@@ -15,6 +15,14 @@ export interface Effect {
   timeOfEffect: number
 }
 
+export interface PlayerStatistic {
+  attack_cost: number,
+  attack_speed: number,
+  defense_cost: number, 
+  speed: number, 
+  luck: number
+}
+
 // export interface Inventory {
 //   items: Item[]
 //   activeItem: Item
@@ -32,3 +40,4 @@ export enum PLAYER_EMITTER {
   HEALTH_UP = "PLAYER_HEALTH_UP",
   HEALTH_DOWN = "PLAYER_HEALTH_DOWN",
 }
+

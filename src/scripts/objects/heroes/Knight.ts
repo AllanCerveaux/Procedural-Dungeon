@@ -9,8 +9,9 @@ export class Knight extends Player {
     this.life.heart = 8
     this.life.extra = 0
     this.speed = 130
-    this.attack_cost = 2
-    this.attack_speed = 1800
-    this.defense_cost = 1
+    this.attack_cost = 200
+    this.attack_speed = 180
+    this.defense_cost = 100
+    this.luck = 0
   }
 }
