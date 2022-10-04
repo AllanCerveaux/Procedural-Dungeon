@@ -11,7 +11,7 @@ export default class Statistic extends Phaser.GameObjects.Text {
     this.statName = statName
     this.value = value
     
-    this.setText(`${statName}: ${value}`)
+    this.setText(`${statName}: ${value as number / 100}`)
   }
 
 }

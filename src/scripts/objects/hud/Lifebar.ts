@@ -58,7 +58,7 @@ export class Lifebar extends Phaser.GameObjects.Container {
   /**
    * @TODO: Find better way to send event at generation of lifebar
    */
-  health_up(isExtra: boolean, state?: string) {
+  health_up(isExtra: boolean) {
     if (this.length === this.maxSize && !isExtra) this.health_down(true)
     if (this.length === this.maxSize) return
 
@@ -71,9 +71,6 @@ export class Lifebar extends Phaser.GameObjects.Container {
         this.add(heart)
       }
     } else this.addAt(heart, 0)
-
-    // if (state !== 'generate') PlayerEmitter.emit(PLAYER_EMITTER.HEALTH_UP, isExtra ? 'extra' : 'heart')
-
   }
 
   health_down(isExtra: boolean) {

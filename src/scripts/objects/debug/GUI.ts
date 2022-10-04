@@ -2,16 +2,19 @@ import * as EssentialsPlugin from '@tweakpane/plugin-essentials'
 
 import { Pane } from 'tweakpane'
 import Player from "@objects/player/Player";
+import {PlayerEmitter} from "@utils/events";
+import {PLAYER_EMITTER} from "@objects/player/type";
+import {STATS_EMITTER} from "@objects/hud/Stats";
 
-export function DebugGUI(player: Player) {
+export function DebugGUI() {
   const pane = new Pane({
     title: 'Procedural Dungeon Debug'
   })
   
-  PlayerGUI(pane, player)
+  PlayerGUI(pane)
 }
 
-function PlayerGUI(pane: Pane, player: Player) {
+function PlayerGUI(pane: Pane) {
   pane.registerPlugin(EssentialsPlugin)
   const folder = pane.addFolder({
     title: 'Player'
@@ -25,10 +28,12 @@ function PlayerGUI(pane: Pane, player: Player) {
     ['+1 H', '-1 H'],
     ['+1 E', '-1 E']
   ]
+  
   const stats_controller = folder.addFolder({title: 'Stats Controller', expanded: false})
   const stat_up_down = [
     ['+1', '-1']
   ]
+  
   life_controller
     .addBlade({
       view: 'buttongrid',
@@ -40,10 +45,10 @@ function PlayerGUI(pane: Pane, player: Player) {
     })
     .on('click', ({ index }) => {
       const [x, y] = index
-      if (x === 0 && y === 0) player.health_up(false)
-      if (x === 0 && y === 1) player.health_down(false)
-      if (x === 1 && y === 0) player.health_up(true)
-      if (x === 1 && y === 1) player.health_down(true)
+      if (x === 0 && y === 0) PlayerEmitter.emit(PLAYER_EMITTER.HEALTH_UP, 'heart')
+      if (x === 0 && y === 1) PlayerEmitter.emit(PLAYER_EMITTER.HEALTH_DOWN, 'heart')
+      if (x === 1 && y === 0) PlayerEmitter.emit(PLAYER_EMITTER.HEALTH_UP, 'extra')
+      if (x === 1 && y === 1) PlayerEmitter.emit(PLAYER_EMITTER.HEALTH_DOWN, 'extra')
     })
   life_controller
     .addBlade({
@@ -56,10 +61,10 @@ function PlayerGUI(pane: Pane, player: Player) {
     })
     .on('click', ({ index }) => {
       const [x, y] = index
-      if (x === 0 && y === 0) player.take_heal(1, 'heart')
-      if (x === 0 && y === 1) player.take_damage(1, 'heart')
-      if (x === 1 && y === 0) player.take_heal(1, 'extra')
-      if (x === 1 && y === 1) player.take_damage(1, 'extra')
+      if (x === 0 && y === 0) PlayerEmitter.emit(PLAYER_EMITTER.HEAL, 1, 'heart')
+      if (x === 0 && y === 1) PlayerEmitter.emit(PLAYER_EMITTER.DAMAGE, 1, 'heart')
+      if (x === 1 && y === 0) PlayerEmitter.emit(PLAYER_EMITTER.HEAL, 1, 'extra')
+      if (x === 1 && y === 1) PlayerEmitter.emit(PLAYER_EMITTER.DAMAGE, 1, 'extra')
     })
   
   stats_controller
@@ -73,7 +78,7 @@ function PlayerGUI(pane: Pane, player: Player) {
     })
     .on('click', ({ index }) => {
       const [x, y] = index
-      if (x === 0 && y === 0) player.stat_update('up', 'attack_cost', 10)
-      if (x === 0 && y === 1) player.stat_update('down', 'attack_cost', 10)
+      if (x === 0 && y === 0) PlayerEmitter.emit(STATS_EMITTER.STATS_CHANGE, 'up', 'strength', 100)
+      if (x === 0 && y === 1) PlayerEmitter.emit(STATS_EMITTER.STATS_CHANGE, 'down', 'strength', 100)
     })
 }
