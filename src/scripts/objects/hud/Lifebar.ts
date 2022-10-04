@@ -39,7 +39,7 @@ export class Lifebar extends Phaser.GameObjects.Container {
   generate(heart: number, extra: number) {
     for (let i = 2; i <= heart + extra; i += 2) {
       const isExtra = i > heart
-      this.health_up(isExtra, 'generate')
+      this.health_up(isExtra)
     }
   }
 
