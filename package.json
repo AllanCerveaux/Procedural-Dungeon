@@ -12,9 +12,13 @@
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
-    "phaser": "^3.55.2"
+    "@tweakpane/plugin-essentials": "^0.1.4",
+    "phaser": "^3.55.2",
+    "tweakpane": "^3.1.0",
+    "webfontloader": "^1.6.28"
   },
   "devDependencies": {
+    "@tweakpane/core": "^1.1.0",
     "@types/node": "^18.0.3",
     "create-serve": "^1.0.1",
     "esbuild": "^0.14.49",

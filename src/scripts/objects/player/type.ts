@@ -4,7 +4,7 @@ export enum StatusEffect {
   BURN,
   CHARM,
   FEAR,
-  PETERIFIED,
+  PETRIFIED,
   SLOW,
   CONFUSION,
   BLEED
@@ -13,6 +13,14 @@ export enum StatusEffect {
 export interface Effect {
   status: StatusEffect
   timeOfEffect: number
+}
+
+export interface PlayerStatistic {
+  attack_cost: number,
+  attack_speed: number,
+  defense_cost: number, 
+  speed: number, 
+  luck: number
 }
 
 // export interface Inventory {
@@ -24,3 +32,12 @@ export interface Effect {
 // }
 
 // export interface Item {}
+
+
+export enum PLAYER_EMITTER {
+  DAMAGE = "PLAYER_DAMAGE",
+  HEAL = "PLAYER_HEAL",
+  HEALTH_UP = "PLAYER_HEALTH_UP",
+  HEALTH_DOWN = "PLAYER_HEALTH_DOWN",
+}
+
