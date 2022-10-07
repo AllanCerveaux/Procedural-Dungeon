@@ -34,9 +34,12 @@ export default class Stats extends Phaser.GameObjects.Container {
     })
   }
   
-  stateChange = (state: 'up' | 'down', name: string) => {
+  stateChange = (state: 'up' | 'down', name: string, cost: number) => {
     const stat = this.getFirst('statName', name) as Statistic
-    console.log(stat.value)
+    
+    if(state === 'up') (stat.value as number) += cost;
+    else (stat.value as number) -= cost;
+    
     stat.setText(`${name}: ${stat.value as number / 100}`)
   }
 }
