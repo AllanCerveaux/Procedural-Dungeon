@@ -18,16 +18,28 @@ export class Lifebar extends Phaser.GameObjects.Container {
     this.scene.add.existing(this)
     this.generate(life.heart, life.extra)
 
-    PlayerEmitter.on(LIFEBAR_EMITTER.DAMAGE, (cost: number, isExtra: boolean) => this.damage(cost, isExtra), this)
-    PlayerEmitter.on(LIFEBAR_EMITTER.HEAL, (cost: number, isExtra: boolean) => this.heal(cost, isExtra), this)
-    PlayerEmitter.on(LIFEBAR_EMITTER.HEALTH_UP, (isExtra: boolean) => this.health_up(isExtra), this)
-    PlayerEmitter.on(LIFEBAR_EMITTER.HEALTH_DOWN, (isExtra: boolean) => this.health_down(isExtra), this)
+    PlayerEmitter.on(PLAYER_EMITTER.DAMAGE, (cost: number, type: string) => {
+      const isExtra = type === 'extra'
+      this.damage(cost, isExtra)
+    }, this)
+    PlayerEmitter.on(PLAYER_EMITTER.HEAL, (cost: number, type: string) => {
+      const isExtra = type === 'extra'
+      this.heal(cost, isExtra)
+    }, this)
+    PlayerEmitter.on(PLAYER_EMITTER.HEALTH_UP, (type: string) => {
+      const isExtra = type === 'extra'
+      this.health_up(isExtra)
+    }, this)
+    PlayerEmitter.on(PLAYER_EMITTER.HEALTH_DOWN, (type: string) => {
+      const isExtra = type === 'extra'
+      this.health_down(isExtra)
+    }, this)
   }
 
   generate(heart: number, extra: number) {
     for (let i = 2; i <= heart + extra; i += 2) {
       const isExtra = i > heart
-      this.health_up(isExtra, 'generate')
+      this.health_up(isExtra)
     }
   }
 
@@ -46,7 +58,7 @@ export class Lifebar extends Phaser.GameObjects.Container {
   /**
    * @TODO: Find better way to send event at generation of lifebar
    */
-  health_up(isExtra: boolean, state?: string) {
+  health_up(isExtra: boolean) {
     if (this.length === this.maxSize && !isExtra) this.health_down(true)
     if (this.length === this.maxSize) return
 
@@ -59,9 +71,6 @@ export class Lifebar extends Phaser.GameObjects.Container {
         this.add(heart)
       }
     } else this.addAt(heart, 0)
-
-    if (state !== 'generate') PlayerEmitter.emit(PLAYER_EMITTER.HEALTH_UP, isExtra ? 'extra' : 'heart')
-
   }
 
   health_down(isExtra: boolean) {
@@ -69,7 +78,6 @@ export class Lifebar extends Phaser.GameObjects.Container {
     if (last_heart) {
       this.removeAt(this.getIndex(last_heart), true)
     }
-    PlayerEmitter.emit(PLAYER_EMITTER.HEALTH_DOWN, isExtra ? 'extra' : 'heart')
   }
 
   heal(cost: number = 1, isExtra: boolean = false) {
@@ -79,8 +87,6 @@ export class Lifebar extends Phaser.GameObjects.Container {
       if (!first_heart) return
     }
     first_heart.increaseState(cost)
-
-    PlayerEmitter.emit(PLAYER_EMITTER.HEAL, cost, isExtra)
   }
 
   damage(cost: number = 1, isExtra: boolean = false) {
@@ -91,7 +97,5 @@ export class Lifebar extends Phaser.GameObjects.Container {
     }
     last_heart.decreaseState(cost)
     if (last_heart.isEmpty() && last_heart.isExtra) this.health_down(true)
-    
-    PlayerEmitter.emit(PLAYER_EMITTER.DAMAGE, cost, isExtra)
   }
 }
