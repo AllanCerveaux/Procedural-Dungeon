@@ -88,14 +88,9 @@ export default class Base extends Phaser.GameObjects.Sprite{
   }
   
   updateStatistic(state, name, cost) {
-    if(state === 'up') {
-      this.statistics.increase(name, cost)
-      console.log(this.statistics)
-      return
-    }
-    this.statistics.decrease(name, cost)
+    if(state === 'UP') this.statistics.increase(name, cost)
+    else this.statistics.decrease(name, cost)
     console.log(this.statistics)
-
   }
   
   freeze(value: boolean = false) {

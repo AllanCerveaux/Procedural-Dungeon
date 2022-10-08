@@ -1,7 +1,7 @@
 import {DEFAULT_HEIGHT} from "@constants";
 import {PlayerEmitter} from "@utils/events";
 import Statistic from "@objects/hud/Statistic";
-import {StatisticBase} from "@objects/entities/Statistics";
+import Base from "@objects/entities/Base";
 
 export enum STATS_EMITTER {
   STATS_CHANGE = 'STATS_CHANGE'  
@@ -9,11 +9,13 @@ export enum STATS_EMITTER {
 
 export default class Stats extends Phaser.GameObjects.Container {
   grid: Phaser.GameObjects.GameObject[]
-  constructor(scene: Phaser.Scene, x: number, y: number, {strength, attack_speed, attack_distance, max_speed, luck}: StatisticBase) {
+  entity: Base
+  constructor(scene: Phaser.Scene, x: number, y: number, entity: Base) {
     super(scene, x, y)
     this.scene.add.existing(this)
-    this.generate({strength, attack_speed, attack_distance, max_speed, luck})
-    PlayerEmitter.on(STATS_EMITTER.STATS_CHANGE, this.stateChange)
+    this.entity = entity
+    this.generate(entity.statistics)
+    PlayerEmitter.on(STATS_EMITTER.STATS_CHANGE, this.stateChange, this)
   }
   
   update() {
@@ -26,20 +28,19 @@ export default class Stats extends Phaser.GameObjects.Container {
       y: DEFAULT_HEIGHT / 3
     })
   }
-  
+  // @TODO: Find Another way to generate stats
   generate(stats) {
     Object.keys(stats).forEach((name) => {
-      const text = new Statistic(this.scene, -20, -50, '', {}, name, stats[name])
+      name = name.replace('_', '')
+      const text = new Statistic(this.scene, -20, -50, '', {}, {
+        entity: this.entity, 
+        statName: name
+      })
       this.add(text)
     })
   }
   
-  stateChange = (state: 'up' | 'down', name: string, cost: number) => {
-    const stat = this.getFirst('statName', name) as Statistic
-    
-    if(state === 'up') (stat.value as number) += cost;
-    else (stat.value as number) -= cost;
-    
-    stat.setText(`${name}: ${stat.value as number / 100}`)
+  stateChange(_, name: string) {
+    (this.getFirst('statName', name) as Statistic).updateStat()
   }
 }

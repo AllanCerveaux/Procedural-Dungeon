@@ -16,13 +16,7 @@ export class HUDScene extends Phaser.Scene {
   create({ player }: {player: Player}) {
     this.lifebar = new Lifebar(this, 0, 0, player.life)
     console.log(player.statistics)
-    this.player_stats = new Stats(this, 0, 0, {
-      strength: player.statistics.strength,
-      attack_speed: player.statistics.attack_speed,
-      attack_distance: player.statistics.attack_distance,
-      max_speed: player.statistics.max_speed,
-      luck: player.statistics.luck
-    })
+    this.player_stats = new Stats(this, 0, 0, player)
     this.fps_text = new FPSText(this, this.cameras.main.width - 240, 0)
     if (process.env.NODE_ENV === 'development') DebugGUI()
   }

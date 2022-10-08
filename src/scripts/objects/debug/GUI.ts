@@ -31,7 +31,11 @@ function PlayerGUI(pane: Pane) {
   
   const stats_controller = folder.addFolder({title: 'Stats Controller', expanded: false})
   const stat_up_down = [
-    ['+1', '-1']
+    ['+1 A', '-1 A'],
+    ['+1 AS', '-1 AS'],
+    ['+1 AD', '-1 AD'],
+    ['+1 S', '-1 S'],
+    ['+1 L', '-1 L'],
   ]
   
   life_controller
@@ -70,7 +74,7 @@ function PlayerGUI(pane: Pane) {
   stats_controller
     .addBlade({
       view: 'buttongrid',
-      size: [1, 2],
+      size: [5, 2],
       cells: (x, y) => ({
         title: stat_up_down[x][y]
       }),
@@ -78,7 +82,15 @@ function PlayerGUI(pane: Pane) {
     })
     .on('click', ({ index }) => {
       const [x, y] = index
-      if (x === 0 && y === 0) PlayerEmitter.emit(STATS_EMITTER.STATS_CHANGE, 'up', 'strength', 100)
-      if (x === 0 && y === 1) PlayerEmitter.emit(STATS_EMITTER.STATS_CHANGE, 'down', 'strength', 100)
+      if (x === 0 && y === 0) PlayerEmitter.emit(STATS_EMITTER.STATS_CHANGE, 'UP', 'strength', 10)
+      if (x === 0 && y === 1) PlayerEmitter.emit(STATS_EMITTER.STATS_CHANGE, 'DOWN', 'strength', 10)
+      if (x === 1 && y === 0) PlayerEmitter.emit(STATS_EMITTER.STATS_CHANGE, 'UP', 'attack_speed', 10)
+      if (x === 1 && y === 1) PlayerEmitter.emit(STATS_EMITTER.STATS_CHANGE, 'DOWN', 'attack_speed', 10)
+      if (x === 2 && y === 0) PlayerEmitter.emit(STATS_EMITTER.STATS_CHANGE, 'UP', 'attack_distance', 10)
+      if (x === 2 && y === 1) PlayerEmitter.emit(STATS_EMITTER.STATS_CHANGE, 'DOWN', 'attack_distance', 10)
+      if (x === 3 && y === 0) PlayerEmitter.emit(STATS_EMITTER.STATS_CHANGE, 'UP', 'max_speed', 10)
+      if (x === 3 && y === 1) PlayerEmitter.emit(STATS_EMITTER.STATS_CHANGE, 'DOWN', 'max_speed', 10)
+      if (x === 4 && y === 0) PlayerEmitter.emit(STATS_EMITTER.STATS_CHANGE, 'UP', 'luck', 10)
+      if (x === 4 && y === 1) PlayerEmitter.emit(STATS_EMITTER.STATS_CHANGE, 'DOWN', 'luck', 10)
     })
 }
