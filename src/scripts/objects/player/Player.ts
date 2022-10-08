@@ -12,10 +12,7 @@ export default class Player extends Base {
     PlayerEmitter.on(PLAYER_EMITTER.HEAL, (cost: number, isExtra: boolean) => this.heal(cost, isExtra ? 'extra' : 'heal'))
     PlayerEmitter.on(PLAYER_EMITTER.HEALTH_UP, (type: LifeDamageOrHealType) => this.life.increase(type, 2))
     PlayerEmitter.on(PLAYER_EMITTER.HEALTH_DOWN, (type: LifeDamageOrHealType) => this.life.decrease(type, 2))
-    PlayerEmitter.on(STATS_EMITTER.STATS_CHANGE, (state, name, cost) => {
-      console.log(state, name, cost)
-      this.updateStatistic(state, name, cost)
-    })
+    PlayerEmitter.on(STATS_EMITTER.STATS_CHANGE, (state, name, cost) => this.updateStatistic(state, name, cost))
   }
 
   protected preUpdate(time: number, delta: number): void {
