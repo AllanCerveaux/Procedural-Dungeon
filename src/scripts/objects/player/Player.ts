@@ -5,8 +5,8 @@ import Base from "@objects/entities/Base";
 import {LifeDamageOrHealType} from "@objects/entities/Life";
 
 export default class Player extends Base {
-  constructor(scene: Phaser.Scene, x: number, y: number, { key, name, max_speed }: { key: string; name: string; max_speed: number }) {
-    super(scene, x, y, {key, name, max_speed, type: 'player'})
+  constructor(scene: Phaser.Scene, x: number, y: number, { key, name }: { key: string; name: string }) {
+    super(scene, x, y, {key, name, type: 'player'})
     
     PlayerEmitter.on(PLAYER_EMITTER.DAMAGE, (cost: number, isExtra: boolean) => this.hit(cost, isExtra ? 'extra' : 'heal'))
     PlayerEmitter.on(PLAYER_EMITTER.HEAL, (cost: number, isExtra: boolean) => this.heal(cost, isExtra ? 'extra' : 'heal'))

@@ -6,7 +6,6 @@ import {Control} from "@objects/entities/Control";
 export type BaseOptions = {
   key: string;
   name: string;
-  max_speed: number;
   type: 'enemy' | 'player'
 }
 
@@ -21,7 +20,7 @@ export default class Base extends Phaser.GameObjects.Sprite{
   entity_type: BaseOptions['type']
   speed: number
   
-  protected constructor(scene: Phaser.Scene, x: number, y: number, { key, name, max_speed = 100, type }: BaseOptions) {
+  protected constructor(scene: Phaser.Scene, x: number, y: number, { key, name, type }: BaseOptions) {
     super(scene, x, y, key)
     this.scene.add.existing(this)
     this.scene.physics.add.existing(this)
