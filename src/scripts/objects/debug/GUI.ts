@@ -3,7 +3,7 @@ import * as EssentialsPlugin from '@tweakpane/plugin-essentials'
 import { Pane } from 'tweakpane'
 import Player from "@objects/player/Player";
 import {PlayerEmitter} from "@utils/events";
-import {PLAYER_EMITTER} from "@objects/player/type";
+import {Item, PLAYER_EMITTER} from "@objects/player/type";
 import {STATS_EMITTER} from "@objects/hud/Stats";
 
 export function DebugGUI() {
@@ -36,6 +36,11 @@ function PlayerGUI(pane: Pane) {
     ['+1 AD', '-1 AD'],
     ['+1 S', '-1 S'],
     ['+1 L', '-1 L'],
+  ]
+  
+  const inventory_controller = folder.addFolder({title: 'Inventory Controller', expanded: true})
+  const inventory = [
+    ['Add Item', 'Remove Item']
   ]
   
   life_controller
@@ -92,5 +97,20 @@ function PlayerGUI(pane: Pane) {
       if (x === 3 && y === 1) PlayerEmitter.emit(STATS_EMITTER.STATS_CHANGE, 'DOWN', 'max_speed', 10)
       if (x === 4 && y === 0) PlayerEmitter.emit(STATS_EMITTER.STATS_CHANGE, 'UP', 'luck', 10)
       if (x === 4 && y === 1) PlayerEmitter.emit(STATS_EMITTER.STATS_CHANGE, 'DOWN', 'luck', 10)
+    })
+  
+  inventory_controller
+    .addBlade({
+      view: 'buttongrid',
+      size: [1, 2],
+      cells: (x, y) => ({
+        title: inventory[x][y]
+      })
+    })
+    .on('click', ({ index }) => {
+      const [x, y] = index
+      const item_test: Item = {id: 0, type: 'resource', name: 'item_test', description: '', price: 0, drop_chance: 0}
+      if (x === 0 && y === 0) PlayerEmitter.emit(PLAYER_EMITTER.PICKUP_ITEM, item_test)
+      if (x === 0 && y === 1) PlayerEmitter.emit(PLAYER_EMITTER.DROP_ITEM, item_test)
     })
 }

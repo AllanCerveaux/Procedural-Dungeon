@@ -13,6 +13,10 @@ export class Inventory implements InventoryDefault {
   
   constructor() {
     this.items = []
+    this.size = 10
+    this.activeItem = null
+    this.consumable = null
+    this.trinket = null
   }
 
   get activeItem(): Item | null {

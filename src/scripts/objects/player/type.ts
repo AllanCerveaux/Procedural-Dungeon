@@ -43,7 +43,7 @@ export type Item = {
   description: string
   price: number
   drop_chance: number
-  buff: ItemCharacteristic
+  buff?: ItemCharacteristic
 }
 
 export type ItemCharacteristic = {
