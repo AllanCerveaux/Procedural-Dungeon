@@ -1,6 +1,6 @@
 import {MainScene} from "@scenes/main.scene";
 import {Life, LifeDamageOrHealType} from "@objects/entities/Life";
-import {Statistics} from "@objects/entities/Statistics";
+import {Statistics, StatisticsType} from "@objects/entities/Statistics";
 import {Control} from "@objects/entities/Control";
 
 export type BaseOptions = {
@@ -86,7 +86,7 @@ export default class Base extends Phaser.GameObjects.Sprite{
     this.life.increase(heal_type, cost)
   }
   
-  updateStatistic(state, name, cost) {
+  updateStatistic(state: 'UP' | 'DOWN', name: StatisticsType, cost: number) {
     if(state === 'UP') this.statistics.increase(name, cost)
     else this.statistics.decrease(name, cost)
   }
