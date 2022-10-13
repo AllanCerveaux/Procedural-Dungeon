@@ -1,3 +1,5 @@
+import { StatisticBase } from "@objects/entities/Statistics";
+
 export enum StatusEffect {
   POISON,
   FROST,
@@ -23,15 +25,38 @@ export interface PlayerStatistic {
   luck: number
 }
 
-// export interface Inventory {
-//   items: Item[]
-//   activeItem: Item
-//   trinket: Item
-//   consumable: Item
-//   coins: number
-// }
+export type InventoryDefault = {
+  items: { 
+    item: Item
+    quantity: number
+  }[]
+  size: 10 | number
+  activeItem: Item | null
+  trinket: Item | null
+  consumable: Item | null
+}
 
-// export interface Item {}
+export type Item = {
+  id: number
+  type: "active" | "trinket" | "consumable" | "resource"
+  name: string
+  description: string
+  price: number
+  drop_chance: number
+  buff: ItemCharacteristic
+}
+
+export type ItemCharacteristic = {
+  can_be_activated: boolean
+  timeout: number
+  statistic?: StatisticBase
+}
+
+export type ItemPool = {
+  id: number
+  name: string
+  items: Item[]
+}
 
 
 export enum PLAYER_EMITTER {
@@ -39,5 +64,6 @@ export enum PLAYER_EMITTER {
   HEAL = "PLAYER_HEAL",
   HEALTH_UP = "PLAYER_HEALTH_UP",
   HEALTH_DOWN = "PLAYER_HEALTH_DOWN",
+  PICKUP_ITEM = "PICKUP_ITEM",
+  DROP_ITEM = "DROP_ITEM"
 }
-
