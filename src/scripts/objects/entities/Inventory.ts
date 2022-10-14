@@ -1,5 +1,7 @@
 import {InventoryDefault, Item} from "@objects/player/type";
-import {PlayerEmitter} from "@utils/events";
+import {GlobalEmitter} from "@utils/events";
+import {GLOBAL_EMITTER} from "@types";
+import {ITEM_TYPE} from "@constants";
 
 export class Inventory implements InventoryDefault {
   private _activeItem: Item | null;
@@ -75,19 +77,19 @@ export class Inventory implements InventoryDefault {
 
   add(item: Item, quantity: number) {
     switch (item.type) {
-      case "active":
+      case ITEM_TYPE.ACTIVE:
         if(this.activeItem) this.drop(this.activeItem)
         this.activeItem = item
         break
-      case "consumable":
+      case ITEM_TYPE.CONSUMABLE:
         if(this.consumable) this.drop(this.consumable)
         this.consumable = item
         break
-      case "trinket":
-        if(this.trinket) this.drop(this.trinket)
+      case ITEM_TYPE.TRINKET:
+        if(this.trinket) this.drop(this.trinket, quantity)
         this.trinket = item
         break
-      case "resource":
+      case ITEM_TYPE.RESOURCE:
         this.addItem(item, quantity)
         break
       default:
@@ -97,15 +99,15 @@ export class Inventory implements InventoryDefault {
 
   remove(item: Item, quantity: number, isDropped: boolean) {
     switch (item.type) {
-      case "consumable":
-        if(this.consumable) this.drop(this.consumable)
+      case ITEM_TYPE.CONSUMABLE:
+        if(this.consumable) this.drop(this.consumable, quantity)
         this.consumable = null
         break
-      case "trinket":
-        if(this.trinket) this.drop(this.trinket)
+      case ITEM_TYPE.TRINKET:
+        if(this.trinket) this.drop(this.trinket, quantity)
         this.trinket = null
         break
-      case "resource":
+      case ITEM_TYPE.RESOURCE:
         this.removeItem(item, quantity, isDropped)
         break
       default:
@@ -130,13 +132,10 @@ export class Inventory implements InventoryDefault {
       this.items = this.items.filter(i => i.item.name !== item.name)
     }
     
-    if(isDropped) this.drop(item)
+    if(isDropped) this.drop(item, quantity)
   }
-
-  /**
-   * @TODO: Create Global emitter to catch this event
-   */
-  private drop(item: Item) {
-    PlayerEmitter.emit('PLAYER_ITEM_DROP', item)
+  
+  private drop(item: Item, quantity?: number) {
+    GlobalEmitter.emit(GLOBAL_EMITTER.PLAYER_ITEM_DROP, { item, quantity })
   }
 }
