@@ -31,3 +31,10 @@ export enum HEART {
   HALF,
   FULL
 }
+
+export enum ITEM_TYPE {
+  ACTIVE = "active",
+  TRINKET = "trinket",
+  RESOURCE = "resource",
+  CONSUMABLE = "consumable"
+}
