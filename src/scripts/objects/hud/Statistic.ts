@@ -33,8 +33,6 @@ export default class Statistic extends Phaser.GameObjects.Text {
   }
   
   updateStat() {
-    console.log(this.value, this.entity.statistics)
     this.setText(`${this.statName}: ${this.entity.statistics[this.statName] / 100}`)
-    // this[`stat${state}`](value)
   }
 }
