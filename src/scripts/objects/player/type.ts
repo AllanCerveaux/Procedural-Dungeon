@@ -1,4 +1,5 @@
 import { StatisticBase } from "@objects/entities/Statistics";
+import {ITEM_TYPE} from "@constants";
 
 export enum StatusEffect {
   POISON,
@@ -38,7 +39,7 @@ export type InventoryDefault = {
 
 export type Item = {
   id: number
-  type: "active" | "trinket" | "consumable" | "resource"
+  type: ITEM_TYPE
   name: string
   description: string
   price: number
