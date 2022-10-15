@@ -13,10 +13,12 @@
     "strictPropertyInitialization": false,
     "experimentalDecorators": true,
     "moduleResolution": "node",
+    "resolveJsonModule": true,
     "lib": ["dom", "esnext"],
     "typeRoots": ["node_modules/phaser/types/", "./types", "node_modules/@types/"],
     "baseUrl": "src",
     "paths": {
+      "@assets/*": ["assets/*"],
       "@game/*": ["scripts/*"],
       "@scenes/*" : ["scripts/scenes/*"],
       "@objects/*" : ["scripts/objects/*"],

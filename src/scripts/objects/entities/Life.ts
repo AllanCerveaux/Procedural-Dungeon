@@ -1,14 +1,14 @@
-export type LifeDamageOrHealType = 'extra' | 'heal'
+export type LifeDamageOrHealType = 'extra' | 'heal';
 
 export class Life {
-  private _heart: number = 6
-  private _extra: number = 0
-  private _max: number = 20
+  private _heart = 6;
+  private _extra = 0;
+  private _max = 20;
 
-  setLife(life: { heart: number, extra: number, max: number }) {
-    this._heart = life.heart
-    this._extra = life.extra
-    this.max = life.max
+  setLife(life: { heart: number; extra: number; max: number }) {
+    this._heart = life.heart;
+    this._extra = life.extra;
+    this.max = life.max;
   }
 
   get heart(): number {
@@ -35,15 +35,14 @@ export class Life {
     this._max = value;
   }
 
-
   increase(heal_type: LifeDamageOrHealType, cost: number) {
-    const totalOfLife = this.heart + this.extra
-    if(totalOfLife<= this.max) {
-      (this[heal_type] as number) += cost
+    const totalOfLife = this.heart + this.extra;
+    if (totalOfLife <= this.max) {
+      (this[heal_type] as number) += cost;
     }
   }
 
   decrease(damage_type: LifeDamageOrHealType, cost: number) {
-    (this[damage_type] as number) -= cost
+    (this[damage_type] as number) -= cost;
   }
 }

@@ -1,27 +1,38 @@
-export type StatisticsType = 'strength' | 'attack_speed' | 'attack_distance' | 'luck' | 'speed'
+export type StatisticsType =
+  | 'strength'
+  | 'attack_speed'
+  | 'attack_distance'
+  | 'luck'
+  | 'speed';
 export type StatisticBase = {
-  strength: number,
-  attack_speed: number,
-  attack_distance: number,
-  luck: number,
-  max_speed: number
-}
+  strength: number;
+  attack_speed: number;
+  attack_distance: number;
+  luck: number;
+  max_speed: number;
+};
 
 export class Statistics {
-  private _strength: number
-  private _attack_speed: number
-  private _attack_distance: number
-  private _luck: number
-  private _max_speed: number
-  
-  setStatistic({strength, attack_speed, attack_distance, luck, max_speed}: StatisticBase) {
-    this.strength = strength
-    this.attack_speed = attack_speed
-    this.attack_distance = attack_distance
-    this.luck = luck
-    this.max_speed = max_speed
+  private _strength: number;
+  private _attack_speed: number;
+  private _attack_distance: number;
+  private _luck: number;
+  private _max_speed: number;
+
+  setStatistic({
+    strength,
+    attack_speed,
+    attack_distance,
+    luck,
+    max_speed
+  }: StatisticBase) {
+    this.strength = strength;
+    this.attack_speed = attack_speed;
+    this.attack_distance = attack_distance;
+    this.luck = luck;
+    this.max_speed = max_speed;
   }
-  
+
   get strength(): number {
     return this._strength;
   }
@@ -61,11 +72,11 @@ export class Statistics {
   set max_speed(value: number) {
     this._max_speed = value;
   }
-  
+
   increase(type: StatisticsType, cost: number) {
-    this[type] += cost
+    this[type] += cost;
   }
   decrease(type: StatisticsType, cost: number) {
-    this[type] -= cost
+    this[type] -= cost;
   }
 }
