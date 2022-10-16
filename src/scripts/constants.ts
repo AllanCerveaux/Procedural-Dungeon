@@ -33,8 +33,8 @@ export enum HEART {
 }
 
 export enum ITEM_TYPE {
-  ACTIVE = "active",
-  TRINKET = "trinket",
-  RESOURCE = "resource",
-  CONSUMABLE = "consumable"
+  ACTIVE = 'active',
+  TRINKET = 'trinket',
+  RESOURCE = 'resource',
+  CONSUMABLE = 'consumable'
 }

@@ -37,14 +37,15 @@ function PlayerGUI(pane: Pane) {
     ['+1 AS', '-1 AS'],
     ['+1 AD', '-1 AD'],
     ['+1 S', '-1 S'],
-    ['+1 L', '-1 L'],
-  ]
-  
-  const inventory_controller = folder.addFolder({title: 'Inventory Controller', expanded: true})
-  const inventory = [
-    ['Add Item', 'Remove Item']
-  ]
-  
+    ['+1 L', '-1 L']
+  ];
+
+  const inventory_controller = folder.addFolder({
+    title: 'Inventory Controller',
+    expanded: true
+  });
+  const inventory = [['Add Item', 'Remove Item']];
+
   life_controller
     .addBlade({
       view: 'buttongrid',
@@ -96,19 +97,49 @@ function PlayerGUI(pane: Pane) {
       label: 'attack'
     })
     .on('click', ({ index }) => {
-      const [x, y] = index
-      if (x === 0 && y === 0) PlayerEmitter.emit(STATS_EMITTER.STATS_CHANGE, 'UP', 'strength', 10)
-      if (x === 0 && y === 1) PlayerEmitter.emit(STATS_EMITTER.STATS_CHANGE, 'DOWN', 'strength', 10)
-      if (x === 1 && y === 0) PlayerEmitter.emit(STATS_EMITTER.STATS_CHANGE, 'UP', 'attack_speed', 10)
-      if (x === 1 && y === 1) PlayerEmitter.emit(STATS_EMITTER.STATS_CHANGE, 'DOWN', 'attack_speed', 10)
-      if (x === 2 && y === 0) PlayerEmitter.emit(STATS_EMITTER.STATS_CHANGE, 'UP', 'attack_distance', 10)
-      if (x === 2 && y === 1) PlayerEmitter.emit(STATS_EMITTER.STATS_CHANGE, 'DOWN', 'attack_distance', 10)
-      if (x === 3 && y === 0) PlayerEmitter.emit(STATS_EMITTER.STATS_CHANGE, 'UP', 'max_speed', 10)
-      if (x === 3 && y === 1) PlayerEmitter.emit(STATS_EMITTER.STATS_CHANGE, 'DOWN', 'max_speed', 10)
-      if (x === 4 && y === 0) PlayerEmitter.emit(STATS_EMITTER.STATS_CHANGE, 'UP', 'luck', 10)
-      if (x === 4 && y === 1) PlayerEmitter.emit(STATS_EMITTER.STATS_CHANGE, 'DOWN', 'luck', 10)
-    })
-  
+      const [x, y] = index;
+      if (x === 0 && y === 0)
+        PlayerEmitter.emit(STATS_EMITTER.STATS_CHANGE, 'UP', 'strength', 10);
+      if (x === 0 && y === 1)
+        PlayerEmitter.emit(STATS_EMITTER.STATS_CHANGE, 'DOWN', 'strength', 10);
+      if (x === 1 && y === 0)
+        PlayerEmitter.emit(
+          STATS_EMITTER.STATS_CHANGE,
+          'UP',
+          'attack_speed',
+          10
+        );
+      if (x === 1 && y === 1)
+        PlayerEmitter.emit(
+          STATS_EMITTER.STATS_CHANGE,
+          'DOWN',
+          'attack_speed',
+          10
+        );
+      if (x === 2 && y === 0)
+        PlayerEmitter.emit(
+          STATS_EMITTER.STATS_CHANGE,
+          'UP',
+          'attack_distance',
+          10
+        );
+      if (x === 2 && y === 1)
+        PlayerEmitter.emit(
+          STATS_EMITTER.STATS_CHANGE,
+          'DOWN',
+          'attack_distance',
+          10
+        );
+      if (x === 3 && y === 0)
+        PlayerEmitter.emit(STATS_EMITTER.STATS_CHANGE, 'UP', 'max_speed', 10);
+      if (x === 3 && y === 1)
+        PlayerEmitter.emit(STATS_EMITTER.STATS_CHANGE, 'DOWN', 'max_speed', 10);
+      if (x === 4 && y === 0)
+        PlayerEmitter.emit(STATS_EMITTER.STATS_CHANGE, 'UP', 'luck', 10);
+      if (x === 4 && y === 1)
+        PlayerEmitter.emit(STATS_EMITTER.STATS_CHANGE, 'DOWN', 'luck', 10);
+    });
+
   inventory_controller
     .addBlade({
       view: 'buttongrid',
@@ -118,9 +149,18 @@ function PlayerGUI(pane: Pane) {
       })
     })
     .on('click', ({ index }) => {
-      const [x, y] = index
-      const item_test: Item = {id: 0, type: 'resource', name: 'item_test', description: '', price: 0, drop_chance: 0}
-      if (x === 0 && y === 0) PlayerEmitter.emit(PLAYER_EMITTER.PICKUP_ITEM, item_test)
-      if (x === 0 && y === 1) PlayerEmitter.emit(PLAYER_EMITTER.DROP_ITEM, item_test)
-    })
+      const [x, y] = index;
+      const item_test: Item = {
+        id: 0,
+        type: 'resource',
+        name: 'item_test',
+        description: '',
+        price: 0,
+        drop_chance: 0
+      };
+      if (x === 0 && y === 0)
+        PlayerEmitter.emit(PLAYER_EMITTER.PICKUP_ITEM, item_test);
+      if (x === 0 && y === 1)
+        PlayerEmitter.emit(PLAYER_EMITTER.DROP_ITEM, item_test);
+    });
 }

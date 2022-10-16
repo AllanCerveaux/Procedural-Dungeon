@@ -1,24 +1,24 @@
-import {InventoryDefault, Item} from "@objects/player/type";
-import {GlobalEmitter} from "@utils/events";
-import {GLOBAL_EMITTER} from "@types";
-import {ITEM_TYPE} from "@constants";
+import { InventoryDefault, Item } from '@objects/player/type';
+import { GlobalEmitter } from '@utils/events';
+import { GLOBAL_EMITTER } from '@types';
+import { ITEM_TYPE } from '@constants';
 
 export class Inventory implements InventoryDefault {
   private _activeItem: Item | null;
   private _consumable: Item | null;
   private _trinket: Item | null;
   private _items: {
-    item: Item
-    quantity: number
+    item: Item;
+    quantity: number;
   }[];
   private _size: 10 | number;
-  
+
   constructor() {
-    this.items = []
-    this.size = 10
-    this.activeItem = null
-    this.consumable = null
-    this.trinket = null
+    this.items = [];
+    this.size = 10;
+    this.activeItem = null;
+    this.consumable = null;
+    this.trinket = null;
   }
 
   get activeItem(): Item | null {
@@ -28,7 +28,7 @@ export class Inventory implements InventoryDefault {
   set activeItem(value: Item | null) {
     this._activeItem = value;
   }
-  
+
   get consumable(): Item | null {
     return this._consumable;
   }
@@ -38,16 +38,18 @@ export class Inventory implements InventoryDefault {
   }
 
   get items(): {
-    item: Item
-    quantity: number
+    item: Item;
+    quantity: number;
   }[] {
     return this._items;
   }
 
-  set items(value: {
-    item: Item
-    quantity: number
-  }[]) {
+  set items(
+    value: {
+      item: Item;
+      quantity: number;
+    }[]
+  ) {
     this._items = value;
   }
 
@@ -66,76 +68,76 @@ export class Inventory implements InventoryDefault {
   set trinket(value: Item | null) {
     this._trinket = value;
   }
-  
+
   haveSpace() {
-    return this.items.length <= this.size
+    return this.items.length <= this.size;
   }
-  
+
   findItem(item_name: string) {
-    return this.items.find(({ item: { name} }) => name === item_name)
+    return this.items.find(({ item: { name } }) => name === item_name);
   }
 
   add(item: Item, quantity: number) {
     switch (item.type) {
       case ITEM_TYPE.ACTIVE:
-        if(this.activeItem) this.drop(this.activeItem)
-        this.activeItem = item
-        break
+        if (this.activeItem) this.drop(this.activeItem);
+        this.activeItem = item;
+        break;
       case ITEM_TYPE.CONSUMABLE:
-        if(this.consumable) this.drop(this.consumable)
-        this.consumable = item
-        break
+        if (this.consumable) this.drop(this.consumable);
+        this.consumable = item;
+        break;
       case ITEM_TYPE.TRINKET:
-        if(this.trinket) this.drop(this.trinket, quantity)
-        this.trinket = item
-        break
+        if (this.trinket) this.drop(this.trinket, quantity);
+        this.trinket = item;
+        break;
       case ITEM_TYPE.RESOURCE:
-        this.addItem(item, quantity)
-        break
+        this.addItem(item, quantity);
+        break;
       default:
-        break
+        break;
     }
   }
 
   remove(item: Item, quantity: number, isDropped: boolean) {
     switch (item.type) {
       case ITEM_TYPE.CONSUMABLE:
-        if(this.consumable) this.drop(this.consumable, quantity)
-        this.consumable = null
-        break
+        if (this.consumable) this.drop(this.consumable, quantity);
+        this.consumable = null;
+        break;
       case ITEM_TYPE.TRINKET:
-        if(this.trinket) this.drop(this.trinket, quantity)
-        this.trinket = null
-        break
+        if (this.trinket) this.drop(this.trinket, quantity);
+        this.trinket = null;
+        break;
       case ITEM_TYPE.RESOURCE:
-        this.removeItem(item, quantity, isDropped)
-        break
+        this.removeItem(item, quantity, isDropped);
+        break;
       default:
-        break
+        break;
     }
   }
-  
+
   private addItem(item: Item, quantity: number) {
-    const existingItem = this.findItem(item.name)
-    if(this.haveSpace() && existingItem) {
-      existingItem.quantity += quantity
+    const existingItem = this.findItem(item.name);
+    if (this.haveSpace() && existingItem) {
+      existingItem.quantity += quantity;
     } else {
-      this.items.push({item, quantity: 1})
+      this.items.push({ item, quantity: 1 });
     }
   }
-  
+
   private removeItem(item: Item, quantity: number, isDropped: boolean) {
-    const foundItem = this.findItem(item.name)
-    if(foundItem && foundItem.quantity > 1) {
-      foundItem.quantity -= quantity
+    const foundItem = this.findItem(item.name);
+    if (foundItem && foundItem.quantity > 1) {
+      foundItem.quantity -= quantity;
     } else {
-      this.items = this.items.filter(i => i.item.name !== item.name)
+      this.items = this.items.filter((i) => i.item.name !== item.name);
     }
-    
-    if(isDropped) this.drop(item, quantity)
+
+    if (isDropped) this.drop(item, quantity);
   }
-  
+
   private drop(item: Item, quantity?: number) {
-    GlobalEmitter.emit(GLOBAL_EMITTER.PLAYER_ITEM_DROP, { item, quantity })
+    GlobalEmitter.emit(GLOBAL_EMITTER.PLAYER_ITEM_DROP, { item, quantity });
   }
 }

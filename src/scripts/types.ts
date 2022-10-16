@@ -3,5 +3,5 @@ export type Dic<T> = {
 };
 
 export enum GLOBAL_EMITTER {
-  PLAYER_ITEM_DROP = 'PLAYER_ITEM_DROP';
+  PLAYER_ITEM_DROP = 'PLAYER_ITEM_DROP'
 }
