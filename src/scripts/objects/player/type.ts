@@ -10,18 +10,18 @@ export enum StatusEffect {
   BLEED
 }
 
-export interface Effect {
-  status: StatusEffect
-  timeOfEffect: number
-}
+export type Effect = {
+  status: StatusEffect;
+  timeOfEffect: number;
+};
 
-export interface PlayerStatistic {
-  attack_cost: number,
-  attack_speed: number,
-  defense_cost: number, 
-  speed: number, 
-  luck: number
-}
+export type PlayerStatistic = {
+  attack_cost: number;
+  attack_speed: number;
+  defense_cost: number;
+  speed: number;
+  luck: number;
+};
 
 // export interface Inventory {
 //   items: Item[]
@@ -33,11 +33,9 @@ export interface PlayerStatistic {
 
 // export interface Item {}
 
-
 export enum PLAYER_EMITTER {
-  DAMAGE = "PLAYER_DAMAGE",
-  HEAL = "PLAYER_HEAL",
-  HEALTH_UP = "PLAYER_HEALTH_UP",
-  HEALTH_DOWN = "PLAYER_HEALTH_DOWN",
+  DAMAGE = 'PLAYER_DAMAGE',
+  HEAL = 'PLAYER_HEAL',
+  HEALTH_UP = 'PLAYER_HEALTH_UP',
+  HEALTH_DOWN = 'PLAYER_HEALTH_DOWN'
 }
-

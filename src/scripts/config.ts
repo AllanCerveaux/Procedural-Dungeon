@@ -1,6 +1,6 @@
-import { DEFAULT_HEIGHT, DEFAULT_PHYSICS, DEFAULT_WIDTH } from './constants'
+import { DEFAULT_HEIGHT, DEFAULT_PHYSICS, DEFAULT_WIDTH } from '@constants';
 
-import scenes from '@scenes/index'
+import scenes from '@scenes/index';
 
 const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
@@ -12,9 +12,6 @@ const config: Phaser.Types.Core.GameConfig = {
     pixelArt: true
   },
   scene: Object.values(scenes),
-  loader: {
-    path: 'assets/'
-  },
   plugins: {},
   scale: {
     parent: 'phaser-game',
@@ -30,6 +27,6 @@ const config: Phaser.Types.Core.GameConfig = {
       gravity: { y: 0 }
     }
   }
-}
+};
 
-export default config
+export default config;

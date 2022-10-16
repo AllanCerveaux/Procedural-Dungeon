@@ -1,3 +1,3 @@
 export type Dic<T> = {
-  [key: string]: T
-}
+  [key: string]: T;
+};
