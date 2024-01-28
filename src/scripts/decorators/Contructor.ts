@@ -1,1 +1,1 @@
-export declare type Constructor<T> = new (...arg) => T;
+export declare type Constructor<T> = new (...arg) => T

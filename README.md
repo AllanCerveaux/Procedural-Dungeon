@@ -26,7 +26,7 @@ Dowload and install :
 ```sh
 git clone https://github.com/AllanCerveaux/Procedural-Dungeon
 cd Procedural-Dungeon
-yarn install # or npm install
+[pnpm|yarn|npm] install
 ```
 ## Project Setup
 

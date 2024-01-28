@@ -1,2 +1,2 @@
-export { AnimationLoader } from './animations';
-export { AssetsLoader } from './assets';
+export { AnimationLoader } from './animations'
+export { AssetsLoader } from './assets'

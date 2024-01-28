@@ -1,7 +1,7 @@
-import 'phaser';
+import 'phaser'
 
-import config from '@game/config';
+import config from '@game/config'
 
 window.addEventListener('load', () => {
-  new Phaser.Game(config);
-});
+	new Phaser.Game(config)
+})

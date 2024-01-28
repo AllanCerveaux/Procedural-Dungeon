@@ -1,27 +1,27 @@
 export enum StatusEffect {
-  POISON,
-  FROST,
-  BURN,
-  CHARM,
-  FEAR,
-  PETRIFIED,
-  SLOW,
-  CONFUSION,
-  BLEED
+	POISON,
+	FROST,
+	BURN,
+	CHARM,
+	FEAR,
+	PETRIFIED,
+	SLOW,
+	CONFUSION,
+	BLEED,
 }
 
 export type Effect = {
-  status: StatusEffect;
-  timeOfEffect: number;
-};
+	status: StatusEffect
+	timeOfEffect: number
+}
 
 export type PlayerStatistic = {
-  attack_cost: number;
-  attack_speed: number;
-  defense_cost: number;
-  speed: number;
-  luck: number;
-};
+	attack_cost: number
+	attack_speed: number
+	defense_cost: number
+	speed: number
+	luck: number
+}
 
 // export interface Inventory {
 //   items: Item[]
@@ -34,8 +34,8 @@ export type PlayerStatistic = {
 // export interface Item {}
 
 export enum PLAYER_EMITTER {
-  DAMAGE = 'PLAYER_DAMAGE',
-  HEAL = 'PLAYER_HEAL',
-  HEALTH_UP = 'PLAYER_HEALTH_UP',
-  HEALTH_DOWN = 'PLAYER_HEALTH_DOWN'
+	DAMAGE = 'PLAYER_DAMAGE',
+	HEAL = 'PLAYER_HEAL',
+	HEALTH_UP = 'PLAYER_HEALTH_UP',
+	HEALTH_DOWN = 'PLAYER_HEALTH_DOWN',
 }
