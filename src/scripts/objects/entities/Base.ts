@@ -34,9 +34,10 @@ export default class Base extends Phaser.GameObjects.Sprite {
 		this.statistics = new Statistics()
 		this.control = new Control(this.scene)
 
+		this.speed = 0
+
 		this.body.setCollideWorldBounds(true)
-		this.body.setMaxSpeed(this.statistics.max_speed)
-		this.body.setDamping(true)
+		this.body.setDamping(false)
 		this.body.setSize(this.body.halfWidth / 2, this.body.halfHeight / 1.5).setOffset(this.body.halfWidth, 14)
 	}
 
@@ -45,23 +46,27 @@ export default class Base extends Phaser.GameObjects.Sprite {
 
 		this.control.update()
 
-		if (this.speed > this.body.maxSpeed) this.speed = this.body.maxSpeed
+		if (this.control.horizontal_axe === 0 && this.control.vertical_axe === 0) {
+			this.anims.play(`${this.name}_idle`, true)
+			this.body.setVelocity(0, 0)
+		} else this.anims.play(`${this.name}_run`, true)
 
-		if (this.body.moves) {
-			if (this.control.horizontal_axe === 0 && this.control.vertical_axe === 0) {
-				this.body.setAcceleration(0, 0)
-				this.body.setDrag(1 / 1000, 1 / 1000)
-				this.anims.play(`${this.name}_idle`, true)
-			} else {
-				this.control.horizontal_axe < 0 ? (this.flipX = true) : (this.flipX = false)
-				this.anims.play(`${this.name}_run`, true)
-			}
-		}
+		this.setFlipX(this.control.horizontal_axe < 0)
 
-		this.body.setAcceleration(
-			this.control.horizontal_axe * (this.speed * 0.25) * delta,
-			this.control.vertical_axe * (this.speed * 0.25) * delta,
+		const velocity_interop = 0.005 * delta
+
+		const vertical_speed = Phaser.Math.Linear(
+			this.body.velocity.y,
+			this.body.maxSpeed * this.control.vertical_axe,
+			velocity_interop,
 		)
+		const horizontal_speed = Phaser.Math.Linear(
+			this.body.velocity.x,
+			this.body.maxSpeed * this.control.horizontal_axe,
+			velocity_interop,
+		)
+
+		this.body.setVelocity(horizontal_speed, vertical_speed)
 	}
 
 	knockback(force = 100) {
