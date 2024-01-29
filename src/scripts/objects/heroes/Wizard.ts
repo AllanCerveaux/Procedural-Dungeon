@@ -14,5 +14,7 @@ export class Wizard extends Player {
 			luck: 1,
 			max_speed: 100,
 		})
+
+		this.body.setMaxSpeed(this.statistics.max_speed)
 	}
 }

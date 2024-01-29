@@ -14,5 +14,7 @@ export class Knight extends Player {
 			luck: 0,
 			max_speed: 130,
 		})
+
+		this.body.setMaxSpeed(this.statistics.max_speed)
 	}
 }

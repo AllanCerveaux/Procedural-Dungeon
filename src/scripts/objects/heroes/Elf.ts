@@ -14,5 +14,7 @@ export class Elf extends Player {
 			luck: 0,
 			max_speed: 200,
 		})
+
+		this.body.setMaxSpeed(this.statistics.max_speed)
 	}
 }

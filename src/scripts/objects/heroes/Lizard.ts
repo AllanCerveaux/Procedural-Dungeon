@@ -14,5 +14,7 @@ export class Lizard extends Player {
 			luck: 0,
 			max_speed: 150,
 		})
+
+		this.body.setMaxSpeed(this.statistics.max_speed)
 	}
 }
