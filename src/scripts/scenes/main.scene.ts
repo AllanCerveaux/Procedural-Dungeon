@@ -16,6 +16,7 @@ export class MainScene extends Phaser.Scene {
 	}
 
 	create() {
+		this.add.rectangle(DEFAULT_WIDTH / 2, DEFAULT_HEIGHT / 2, 50, 50, 0xff0000)
 		this.player = new Knight(this, DEFAULT_WIDTH / 2, DEFAULT_HEIGHT / 2, 'f')
 
 		this.cameras.main.setZoom(2)
