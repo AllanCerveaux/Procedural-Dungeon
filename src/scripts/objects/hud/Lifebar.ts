@@ -1,7 +1,7 @@
 import { Heart } from './Heart'
 import { HEART } from '@constants'
 import { PlayerEmitter } from '@utils/events'
-import { PLAYER_EMITTER } from '@objects/player/type'
+import { PLAYER_EMITTER } from '@game/objects/player/type'
 
 export enum LIFEBAR_EMITTER {
 	DAMAGE = 'LIFEBAR_DAMAGE',

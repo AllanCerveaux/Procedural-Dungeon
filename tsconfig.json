@@ -1,64 +1,63 @@
 {
-  "compilerOptions": {
-    "target": "ES2020",
-    "useDefineForClassFields": true,
-    "module": "ESNext",
-    "lib": [
-      "DOM",
-      "ES2020",
-      "DOM.Iterable"
-    ],
-    "skipLibCheck": true,
-    /* Bundler mode */
-    "moduleResolution": "bundler",
-    "forceConsistentCasingInFileNames": true,
-    "experimentalDecorators": true,
-    "resolveJsonModule": true,
-    "esModuleInterop": true,
-    /* Linting */
-    "strict": true,
-    "noImplicitAny": true,
-    "strictNullChecks": true,
-    "strictPropertyInitialization": false,
-    /* Path */
-    "baseUrl": "src",
-    "typeRoots": [
-      "node_modules/phaser/types/",
-      "node_modules/@types/"
-    ],
-    "paths": {
-      "@assets/*": [
-        "assets/*"
-      ],
-      "@game/*": [
-        "scripts/*"
-      ],
-      "@scenes/*": [
-        "scripts/scenes/*"
-      ],
-      "@objects/*": [
-        "scripts/objects/*"
-      ],
-      "@utils/*": [
-        "scripts/utils/*"
-      ],
-      "@decorators/*": [
-        "scripts/decorators/*"
-      ],
-      "@constants": [
-        "scripts/constants.ts"
-      ],
-      "@types": [
-        "scripts/types.ts"
-      ]
-    }
-  },
-  "include": [
-    "src/**/*",
-    "vite-env.d.ts"
-  ],
-  "exclude": [
-    "node_modules",
-    "**/*.spec.ts"
-  ]
+	"compilerOptions": {
+		"target": "ES2020",
+		"useDefineForClassFields": true,
+		"module": "ESNext",
+		"lib": [
+			"DOM",
+			"ES2020",
+			"DOM.Iterable"
+		],
+		"skipLibCheck": true,
+		/* Bundler mode */
+		"moduleResolution": "bundler",
+		"forceConsistentCasingInFileNames": true,
+		"experimentalDecorators": true,
+		"resolveJsonModule": true,
+		"esModuleInterop": true,
+		/* Linting */
+		"strict": true,
+		"strictNullChecks": true,
+		"strictPropertyInitialization": false,
+		/* Path */
+		"baseUrl": "src",
+		"typeRoots": [
+			"node_modules/phaser/types/",
+			"node_modules/@types/"
+		],
+		"paths": {
+			"@assets/*": [
+				"assets/*"
+			],
+			"@game/*": [
+				"scripts/*"
+			],
+			"@scenes/*": [
+				"scripts/scenes/*"
+			],
+			"@objects/*": [
+				"scripts/objects/*"
+			],
+			"@utils/*": [
+				"scripts/utils/*"
+			],
+			"@decorators/*": [
+				"scripts/decorators/*"
+			],
+			"@constants": [
+				"scripts/constants.ts"
+			],
+			"@types": [
+				"scripts/types.ts"
+			]
+		}
+	},
+	"include": [
+		"src/**/*",
+		"vite-env.d.ts"
+	],
+	"exclude": [
+		"node_modules",
+		"**/*.spec.ts"
+	]
 }

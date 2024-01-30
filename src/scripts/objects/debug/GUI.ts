@@ -2,7 +2,7 @@ import * as EssentialsPlugin from '@tweakpane/plugin-essentials'
 
 import { Pane } from 'tweakpane'
 import { PlayerEmitter } from '@utils/events'
-import { PLAYER_EMITTER } from '@objects/player/type'
+import { PLAYER_EMITTER } from '@game/objects/player/type'
 import { STATS_EMITTER } from '@objects/hud/Stats'
 
 export function DebugGUI() {
@@ -44,12 +44,12 @@ function PlayerGUI(pane: Pane) {
 		.addBlade({
 			view: 'buttongrid',
 			size: [2, 2],
-			cells: (x, y) => ({
+			cells: (x: number, y: number) => ({
 				title: add_remove[x][y],
 			}),
 			label: 'Health',
 		})
-		.on('click', ({ index }) => {
+		.on('click', ({ index }: { index: [number, number] }) => {
 			const [x, y] = index
 			if (x === 0 && y === 0) PlayerEmitter.emit(PLAYER_EMITTER.HEALTH_UP, 'heart')
 			if (x === 0 && y === 1) PlayerEmitter.emit(PLAYER_EMITTER.HEALTH_DOWN, 'heart')
@@ -60,12 +60,12 @@ function PlayerGUI(pane: Pane) {
 		.addBlade({
 			view: 'buttongrid',
 			size: [2, 2],
-			cells: (x, y) => ({
+			cells: (x: number, y: number) => ({
 				title: add_remove[x][y],
 			}),
 			label: 'Heal\nDamage',
 		})
-		.on('click', ({ index }) => {
+		.on('click', ({ index }: { index: [number, number] }) => {
 			const [x, y] = index
 			if (x === 0 && y === 0) PlayerEmitter.emit(PLAYER_EMITTER.HEAL, 1, 'heart')
 			if (x === 0 && y === 1) PlayerEmitter.emit(PLAYER_EMITTER.DAMAGE, 1, 'heart')
@@ -77,12 +77,12 @@ function PlayerGUI(pane: Pane) {
 		.addBlade({
 			view: 'buttongrid',
 			size: [5, 2],
-			cells: (x, y) => ({
+			cells: (x: number, y: number) => ({
 				title: stat_up_down[x][y],
 			}),
 			label: 'attack',
 		})
-		.on('click', ({ index }) => {
+		.on('click', ({ index }: { index: [number, number] }) => {
 			const [x, y] = index
 			if (x === 0 && y === 0) PlayerEmitter.emit(STATS_EMITTER.STATS_CHANGE, 'UP', 'strength', 10)
 			if (x === 0 && y === 1) PlayerEmitter.emit(STATS_EMITTER.STATS_CHANGE, 'DOWN', 'strength', 10)
