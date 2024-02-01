@@ -1,17 +1,22 @@
 export enum LifeDamageOrHealType {
-	Heart = '_heart',
-	Extra = '_extra',
+	Heart = 'heart',
+	Extra = 'extra',
+}
+
+export type LifeBase = {
+	heart: number
+	extra: number
 }
 
 export class Life {
-	private _heart = 6
-	private _extra = 0
-	private _max = 20
+	private _heart: number
+	private _extra: number
+	private _max: number
 
-	setLife(life: { heart: number; extra: number; max: number }) {
+	constructor(life: LifeBase) {
 		this._heart = life.heart
 		this._extra = life.extra
-		this.max = life.max
+		this._max = 20
 	}
 
 	get heart(): number {
@@ -34,24 +39,11 @@ export class Life {
 		return this._max
 	}
 
-	set max(value: number) {
-		this._max = Math.max(value, this._heart + this._extra)
-	}
-
 	increase(type: LifeDamageOrHealType, amount: number = 2) {
-		if (type === LifeDamageOrHealType.Heart) {
-			this.heart = Math.min(this._heart + amount, this._max)
-		} else if (type === LifeDamageOrHealType.Extra) {
-			const availableExtra = this._max - this._heart
-			this.extra = Math.min(this._extra + amount, availableExtra)
-		}
+		this[type] = Math.min(this[type] + amount, this._max)
 	}
 
 	decrease(type: LifeDamageOrHealType, amount: number = 2) {
-		if (type === LifeDamageOrHealType.Heart) {
-			this.heart = Math.max(this._heart - amount, 0)
-		} else if (type === LifeDamageOrHealType.Extra) {
-			this.extra = Math.max(this._extra - amount, 0)
-		}
+		this[type] = Math.max(this[type] - amount, 0)
 	}
 }

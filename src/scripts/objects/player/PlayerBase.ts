@@ -3,12 +3,13 @@ import { PLAYER_EMITTER } from './type'
 import { Control } from '../base/Control'
 import { EntityBase } from '../entity/EntityBase'
 import { BaseConstructorArgs } from '../entity/type'
+import { PlayerEmitter } from '@game/utils/events'
 
 export class PlayerBase extends EntityBase {
 	private control: Control
 
-	constructor({ scene, x, y, texture, name }: Omit<BaseConstructorArgs, 'type'>) {
-		super({ scene, x, y, texture, name, type: 'player' })
+	constructor({ scene, x, y, texture, name, statistics, life }: Omit<BaseConstructorArgs, 'type'>) {
+		super({ scene, x, y, texture, name, statistics, life, type: 'player' })
 
 		this.control = new Control(scene)
 
@@ -18,17 +19,14 @@ export class PlayerBase extends EntityBase {
 	}
 
 	eventHandler() {
-		this.on(PLAYER_EMITTER.DAMAGE, this.hit)
-		this.on(PLAYER_EMITTER.HEAL, this.heal)
-		this.on(PLAYER_EMITTER.HEALTH_UP, this.life.increase)
-		this.on(PLAYER_EMITTER.HEALTH_DOWN, this.life.decrease)
+		PlayerEmitter.on(PLAYER_EMITTER.DAMAGE, this.hit.bind(this))
+		PlayerEmitter.on(PLAYER_EMITTER.HEAL, this.heal.bind(this))
+		PlayerEmitter.on(PLAYER_EMITTER.HEALTH_UP, this.life.increase.bind(this))
+		PlayerEmitter.on(PLAYER_EMITTER.HEALTH_DOWN, this.life.decrease.bind(this))
 	}
 
 	protected preUpdate(time: number, delta: number): void {
 		super.preUpdate(time, delta)
-		if (this.life.heart + this.life.extra < 1) {
-			this.die()
-		}
 
 		this.control.update()
 		this.move(delta)
@@ -38,9 +36,13 @@ export class PlayerBase extends EntityBase {
 		if (this.control.axe_x === 0 && this.control.axe_y === 0) {
 			this.anims.play(`${this.name}_idle`, true)
 			this.body.setVelocity(0, 0)
-		} else this.anims.play(`${this.name}_run`, true)
+		} else {
+			this.anims.play(`${this.name}_run`, true)
+		}
 
-		this.setFlipX(this.control.axe_x < 0)
+		if (this.control.axe_x !== 0) {
+			this.setFlipX(this.control.axe_x < 0)
+		}
 
 		const velocity_interop = 0.005 * delta
 
@@ -59,6 +61,6 @@ export class PlayerBase extends EntityBase {
 	}
 
 	attack(): void {
-		console.log('attack')
+		return
 	}
 }

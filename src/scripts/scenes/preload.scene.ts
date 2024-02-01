@@ -21,7 +21,6 @@ export class PreloadScene extends Phaser.Scene {
 
 	preload() {
 		this.load.addFile(new WebFontFile(this.load, 'Press Start 2P'))
-		this.load.image('cube', 'cube_test.png')
 		this.assetsLoader.init()
 
 		this.progress_bar = this.add.graphics()
@@ -44,8 +43,8 @@ export class PreloadScene extends Phaser.Scene {
 			})
 			.setOrigin(0.5, 0.5)
 
-		this.load.on('progress', (value) => {
-			this.percentage.setText(`${parseInt(value) * 100}%`)
+		this.load.on('progress', (value: number) => {
+			this.percentage.setText(`${value * 100}%`)
 			this.progress_bar.clear()
 			this.progress_bar.fillStyle(0xdedede, 1)
 			this.progress_bar.fillRect(this.cameras.main.width / 2 - 160, this.cameras.main.height / 2, 300 * value, 20)

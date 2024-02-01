@@ -1,22 +1,30 @@
+import { LifeDamageOrHealType } from '@game/objects/base/Life'
 import { HUDScene } from './overlay/hud.scene'
 import { DEFAULT_HEIGHT, DEFAULT_WIDTH, OVERLAY, SCENES } from '@constants'
-
-import { Elf } from '@objects/heroes/Elf'
+import { PLAYER_EMITTER } from '@game/objects/player/type'
+import { PlayerEmitter, SceneEventEmitter } from '@game/utils/events'
 import { Knight } from '@objects/heroes/Knight'
-import { Lizard } from '@objects/heroes/Lizard'
-import { Wizard } from '@objects/heroes/Wizard'
-import { PlayerEmitter } from '@utils/events'
 
 export class MainScene extends Phaser.Scene {
 	hud: Phaser.Scene | null
-	player: Knight | Wizard | Elf | Lizard
+	player: Knight
+	hitSquare: Phaser.GameObjects.Sprite
+	healSquare: Phaser.GameObjects.Sprite
 
 	constructor() {
 		super({ key: SCENES.MAIN })
 	}
 
 	create() {
-		this.add.rectangle(DEFAULT_WIDTH / 2, DEFAULT_HEIGHT / 2, 50, 50, 0xff0000)
+		this.hitSquare = this.physics.add.staticSprite(DEFAULT_WIDTH / 2 - 50, DEFAULT_HEIGHT / 2, 'objects', 'flask_red')
+		this.healSquare = this.physics.add.staticSprite(
+			DEFAULT_WIDTH / 2 + 50,
+			DEFAULT_HEIGHT / 2,
+			'objects',
+			'flask_green',
+		)
+
+		this.physics.add.staticSprite
 		this.player = new Knight(this, DEFAULT_WIDTH / 2, DEFAULT_HEIGHT / 2, 'f')
 
 		this.cameras.main.setZoom(2)
@@ -26,9 +34,19 @@ export class MainScene extends Phaser.Scene {
 			player: this.player,
 		})
 
-		PlayerEmitter.on('game_over', () => {
+		SceneEventEmitter.on('game_over', () => {
 			this.hud?.scene.remove()
 			this.scene.restart()
+			SceneEventEmitter.removeAllListeners()
+		})
+
+		this.physics.add.overlap(this.player, this.hitSquare, (_, hitSquare) => {
+			PlayerEmitter.emit(PLAYER_EMITTER.DAMAGE, 1)
+			hitSquare.destroy()
+		})
+		this.physics.add.overlap(this.player, this.healSquare, (_, healSquare) => {
+			PlayerEmitter.emit(PLAYER_EMITTER.HEAL, 1, LifeDamageOrHealType.Heart)
+			healSquare.destroy()
 		})
 	}
 
