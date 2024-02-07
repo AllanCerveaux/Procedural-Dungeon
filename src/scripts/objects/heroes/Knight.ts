@@ -15,7 +15,7 @@ export class Knight extends PlayerBase {
 				attack_speed: 180,
 				attack_distance: 100,
 				luck: 0,
-				max_speed: 130,
+				speed: 130,
 			},
 			life: { heart: 8, extra: 0 },
 		})

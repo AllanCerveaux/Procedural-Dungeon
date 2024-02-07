@@ -55,7 +55,7 @@ export abstract class EntityBase extends Phaser.GameObjects.Sprite {
 			.setDamping(true)
 			.setSize(this.body.halfWidth / 2, this.body.halfHeight / 1.5)
 			.setOffset(this.body.halfWidth, 14)
-			.setMaxSpeed(this.statistics.max_speed)
+			.setMaxSpeed(this.statistics.speed)
 	}
 
 	abstract move(delta: number): void

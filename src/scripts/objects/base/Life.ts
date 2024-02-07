@@ -75,6 +75,10 @@ export class Life {
 		this._extra.current = amount
 	}
 
+	get is_full_heal(): boolean {
+		return this.total === this.max_total
+	}
+
 	/**
 	 * Increases the maximum value for a given type of life damage or heal.
 	 * @param {LifeDamageOrHealType} type - The type of life damage or heal.
