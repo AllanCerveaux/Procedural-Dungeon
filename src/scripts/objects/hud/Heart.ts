@@ -1,48 +1,70 @@
+import { HEART_STATE } from './types'
+
 export class Heart extends Phaser.GameObjects.Sprite {
-	declare state: number
+	declare state: HEART_STATE
+
+	static readonly EXTRA_HEART_TINT = 0xc00baff
+
 	isExtra: boolean
 
-	constructor(scene: Phaser.Scene, x: number, y: number, isExtra = false, state = 2) {
+	constructor(scene: Phaser.Scene, x: number, y: number, isExtra = false, state = HEART_STATE.FULL) {
 		super(scene, x, y, 'ui')
+
 		scene.add.existing(this)
 		this.setScale(2)
+
 		this.isExtra = isExtra
+
 		if (isExtra) {
-			this.setTint(0xc00baff)
+			this.setTint(Heart.EXTRA_HEART_TINT)
 		}
-		this.state = state
+
+		this.state = Math.max(HEART_STATE.EMPTY, Math.min(state, HEART_STATE.FULL))
+
+		this.updateFrame()
 	}
 
 	protected preUpdate(time: number, delta: number): void {
 		super.preUpdate(time, delta)
-		if (this.state === 0) {
-			this.setFrame('ui_heart_empty')
-		} else if (this.state === 1) {
-			this.setFrame('ui_heart_half')
-		} else {
-			this.setFrame('ui_heart_full')
+	}
+
+	private updateFrame(): void {
+		switch (this.state) {
+			case HEART_STATE.EMPTY:
+				this.setFrame('ui_heart_empty')
+				break
+			case HEART_STATE.HALF:
+				this.setFrame('ui_heart_half')
+				break
+			case HEART_STATE.FULL:
+				this.setFrame('ui_heart_full')
+				break
+			default:
+				throw new Error(`Invalid state: ${this.state}`)
 		}
 	}
 
 	/**
-	 * If the state is less than 1, then return true
+	 * Return true when state is Empty
 	 * @returns A boolean value.
 	 */
-	isEmpty(): boolean {
-		return this.state < 1
+	get isEmpty(): boolean {
+		return this.state === HEART_STATE.EMPTY
 	}
 
 	/**
 	 * If the state is less than 2, increase the state by 1
 	 */
-	increaseState(cost = 1) {
-		this.state < 2 ? (this.state += cost) : null
+	increaseState(cost: number) {
+		this.state = Math.min(this.state + cost, HEART_STATE.FULL)
+		this.updateFrame()
 	}
 
 	/**
 	 * If the state is greater than 0, decrease the state by 1
 	 */
 	decreaseState(cost = 1) {
-		this.state > 0 ? (this.state -= cost) : null
+		this.state = Math.max(this.state - cost, HEART_STATE.EMPTY)
+		this.updateFrame()
 	}
 }

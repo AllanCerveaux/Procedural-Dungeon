@@ -23,6 +23,8 @@ export type PlayerStatistic = {
 	luck: number
 }
 
+export const MAX_HEART = 20
+
 // export interface Inventory {
 //   items: Item[]
 //   activeItem: Item

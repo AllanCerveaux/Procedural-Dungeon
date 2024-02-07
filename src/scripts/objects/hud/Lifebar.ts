@@ -1,7 +1,7 @@
 import { Heart } from './Heart'
-import { HEART } from '@constants'
-import { PlayerEmitter } from '@utils/events'
-import { PLAYER_EMITTER } from '@objects/player/type'
+import { GUIEventEmitter } from '@utils/events'
+import { Life, LifeDamageOrHealType } from '../base/Life'
+import { HEART_STATE } from './types'
 
 export enum LIFEBAR_EMITTER {
 	DAMAGE = 'LIFEBAR_DAMAGE',
@@ -11,56 +11,35 @@ export enum LIFEBAR_EMITTER {
 }
 
 export class Lifebar extends Phaser.GameObjects.Container {
-	grid: Phaser.GameObjects.GameObject[]
+	declare list: Heart[]
+	grid: Heart[]
 
-	constructor(scene: Phaser.Scene, x: number, y: number, life: { heart: number; extra: number; max: number }) {
+	constructor(scene: Phaser.Scene, x: number, y: number, life: Life) {
 		super(scene, x, y)
-		this.maxSize = life.max / 2
 		this.scene.add.existing(this)
+
+		this.maxSize = life.max / 2
+
 		this.generate(life.heart, life.extra)
 
-		PlayerEmitter.on(
-			PLAYER_EMITTER.DAMAGE,
-			(cost: number, type: string) => {
-				const isExtra = type === 'extra'
-				this.damage(cost, isExtra)
-			},
-			this,
-		)
-		PlayerEmitter.on(
-			PLAYER_EMITTER.HEAL,
-			(cost: number, type: string) => {
-				const isExtra = type === 'extra'
-				this.heal(cost, isExtra)
-			},
-			this,
-		)
-		PlayerEmitter.on(
-			PLAYER_EMITTER.HEALTH_UP,
-			(type: string) => {
-				const isExtra = type === 'extra'
-				this.health_up(isExtra)
-			},
-			this,
-		)
-		PlayerEmitter.on(
-			PLAYER_EMITTER.HEALTH_DOWN,
-			(type: string) => {
-				const isExtra = type === 'extra'
-				this.health_down(isExtra)
-			},
-			this,
-		)
+		this.setupListeners()
 	}
 
-	generate(heart: number, extra: number) {
+	private setupListeners() {
+		GUIEventEmitter.on(LIFEBAR_EMITTER.DAMAGE, this.damage, this)
+		GUIEventEmitter.on(LIFEBAR_EMITTER.HEAL, this.heal, this)
+		GUIEventEmitter.on(LIFEBAR_EMITTER.HEALTH_UP, this.health_up, this)
+		GUIEventEmitter.on(LIFEBAR_EMITTER.HEALTH_DOWN, this.health_down, this)
+	}
+
+	private generate(heart: number, extra: number) {
 		for (let i = 2; i <= heart + extra; i += 2) {
-			const isExtra = i > heart
+			const isExtra = i > heart ? LifeDamageOrHealType.Extra : LifeDamageOrHealType.Heart
 			this.health_up(isExtra)
 		}
 	}
 
-	update() {
+	private updateAlignment() {
 		this.grid = Phaser.Actions.GridAlign(this.list, {
 			width: 5,
 			height: 2,
@@ -72,47 +51,54 @@ export class Lifebar extends Phaser.GameObjects.Container {
 		})
 	}
 
-	/**
-	 * @TODO: Find better way to send event at generation of lifebar
-	 */
-	health_up(isExtra: boolean) {
-		if (this.length === this.maxSize && !isExtra) this.health_down(true)
+	private addHeart(heart: Heart) {
+		const first_extra = this.getFirst<Heart>('isExtra', heart.isExtra)
+
+		const extraHeartPosition = first_extra ? this.getIndex(first_extra) : this.length
+
+		this.addAt(heart, heart.isExtra ? extraHeartPosition : 0)
+	}
+
+	health_up(type: LifeDamageOrHealType) {
+		const isExtra = type === LifeDamageOrHealType.Extra
+
+		if (this.length === this.maxSize && !isExtra) this.health_down(LifeDamageOrHealType.Extra)
 		if (this.length === this.maxSize) return
 
 		const heart = new Heart(this.scene, -30, -20, isExtra)
-		if (isExtra) {
-			const first_extra = this.getFirst('isExtra', isExtra)
-			if (first_extra) {
-				this.addAt(heart, this.getIndex(first_extra))
-			} else {
-				this.add(heart)
-			}
-		} else this.addAt(heart, 0)
+
+		this.addHeart(heart)
+
+		this.updateAlignment()
 	}
 
-	health_down(isExtra: boolean) {
-		const last_heart = this.getAll('isExtra', isExtra).at(-1)
+	health_down(type: LifeDamageOrHealType) {
+		const isExtra = type === LifeDamageOrHealType.Extra
+
+		const last_heart = this.getAll('isExtra', isExtra).pop()
+
 		if (last_heart) {
 			this.removeAt(this.getIndex(last_heart), true)
+			this.updateAlignment()
 		}
 	}
 
-	heal(cost = 1, isExtra = false) {
-		let first_heart = this.first as Heart
-		while (first_heart.isExtra !== isExtra || first_heart.state === HEART.FULL) {
-			first_heart = this.next as Heart
-			if (!first_heart) return
-		}
-		first_heart.increaseState(cost)
+	heal(type: LifeDamageOrHealType, cost: number = 1) {
+		const isExtra = type === LifeDamageOrHealType.Extra
+		const heart = this.list.find((heart) => heart.isExtra === isExtra && heart.state !== HEART_STATE.FULL)
+		if (!heart) return
+
+		heart.increaseState(cost)
 	}
 
-	damage(cost = 1, isExtra = false) {
-		let last_heart = this.last as Heart
-		while (last_heart.isExtra !== isExtra || last_heart.isEmpty()) {
-			last_heart = this.previous as Heart
-			if (!last_heart) return
+	damage(type: LifeDamageOrHealType, cost: number = 1) {
+		const isExtra = type === LifeDamageOrHealType.Extra
+		const lastHeart = [...this.list].reverse().find((heart) => heart.isExtra === isExtra && !heart.isEmpty)
+		if (!lastHeart) return
+
+		lastHeart.decreaseState(cost)
+		if (lastHeart.isEmpty && lastHeart.isExtra) {
+			this.health_down(type)
 		}
-		last_heart.decreaseState(cost)
-		if (last_heart.isEmpty() && last_heart.isExtra) this.health_down(true)
 	}
 }

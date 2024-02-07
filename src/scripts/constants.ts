@@ -12,6 +12,7 @@ export const DEFAULT_INPUT_KEYS = {
 	fullscreen: Phaser.Input.Keyboard.KeyCodes['F'],
 	pause: Phaser.Input.Keyboard.KeyCodes['P'],
 }
+
 export enum SCENES {
 	PRELOAD = 'preload-scene',
 	MENU = 'menu-scene',
@@ -24,10 +25,4 @@ export enum SCENES {
 export enum OVERLAY {
 	HUD = 'hud-overlay',
 	MAP = 'map-overlay',
-}
-
-export enum HEART {
-	EMPTY,
-	HALF,
-	FULL,
 }
