@@ -1,34 +1,58 @@
-import { DEFAULT_HEIGHT, DEFAULT_WIDTH, OVERLAY, SCENES } from '@constants'
-
-import { Elf } from '@objects/heroes/Elf'
+import { LifeDamageOrHealType } from '@game/objects/base/Life'
 import { HUDScene } from './overlay/hud.scene'
+import { DEFAULT_HEIGHT, DEFAULT_WIDTH, OVERLAY, SCENES } from '@constants'
+import { PLAYER_EMITTER } from '@game/objects/player/type'
+import { PlayerEmitter, SceneEventEmitter } from '@game/utils/events'
 import { Knight } from '@objects/heroes/Knight'
-import { Lizard } from '@objects/heroes/Lizard'
-import { Wizard } from '@objects/heroes/Wizard'
-import { PlayerEmitter } from '@utils/events'
 
 export class MainScene extends Phaser.Scene {
-  hud: Phaser.Scene
-  player: Knight | Wizard | Elf | Lizard
-  constructor() {
-    super({ key: SCENES.MAIN })
-  }
+	hud: Phaser.Scene | null
+	player: Knight
+	hitSquare: Phaser.GameObjects.Sprite
+	healSquare: Phaser.GameObjects.Sprite
 
-  create() {
-    this.player = new Knight(this, DEFAULT_WIDTH / 2, DEFAULT_HEIGHT / 2, 'f')
+	constructor() {
+		super({ key: SCENES.MAIN })
+	}
 
-    this.cameras.main.setZoom(2)
-    this.cameras.main.startFollow(this.player)
-    
-    this.hud = this.scene.add(OVERLAY.HUD, HUDScene, true, { player: this.player })
+	create() {
+		this.hitSquare = this.physics.add.staticSprite(DEFAULT_WIDTH / 2 - 50, DEFAULT_HEIGHT / 2, 'objects', 'flask_red')
+		this.healSquare = this.physics.add.staticSprite(
+			DEFAULT_WIDTH / 2 + 50,
+			DEFAULT_HEIGHT / 2,
+			'objects',
+			'flask_green',
+		)
 
-    PlayerEmitter.on('game_over', () => {
-      this.hud.scene.remove()
-      this.scene.restart()
-    })
-  }
+		this.physics.add.staticSprite
+		this.player = new Knight(this, DEFAULT_WIDTH / 2, DEFAULT_HEIGHT / 2, 'f')
 
-  update(time: number, delta: number): void {
-    this.player.update(time, delta)
-  }
+		this.cameras.main.setZoom(2)
+		this.cameras.main.startFollow(this.player)
+
+		this.hud = this.scene.add(OVERLAY.HUD, HUDScene, true, {
+			player: this.player,
+		})
+
+		SceneEventEmitter.on('game_over', () => {
+			this.hud?.scene.remove()
+			this.scene.restart()
+			SceneEventEmitter.removeAllListeners()
+		})
+
+		this.physics.add.overlap(this.player, this.hitSquare, (_, hitSquare) => {
+			PlayerEmitter.emit(PLAYER_EMITTER.DAMAGE, LifeDamageOrHealType.Heart, 1)
+			hitSquare.destroy()
+		})
+		this.physics.add.overlap(this.player, this.healSquare, (_, healSquare) => {
+			if (!this.player.life.is_full_heal) {
+				PlayerEmitter.emit(PLAYER_EMITTER.HEAL, LifeDamageOrHealType.Heart, 1)
+				healSquare.destroy()
+			}
+		})
+	}
+
+	update(time: number, delta: number): void {
+		this.player.update(time, delta)
+	}
 }

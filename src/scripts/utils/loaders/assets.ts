@@ -1,48 +1,28 @@
+// @TODO: IDK why have error on png import, need investigate later
+
+import Character from '@assets/sprites/characters/characters.png'
+import NCharacter from '@assets/sprites/characters/characters_n.png'
+import CharacterJSON from '@assets/sprites/characters/characters.json'
+
+import NUi from '@assets/gui/ui_n.png'
+import Ui from '@assets/gui/ui.png'
+import UiJSON from '@assets/gui/ui.json'
+
+import Object from '@assets/sprites/objects/objects.png'
+import NObject from '@assets/sprites/objects/objects_n.png'
+import ObjectJSON from '@assets/sprites/objects/objects.json'
+
+import Tilesets from '@assets/tilesets/tilesets.png'
+import NTilesets from '@assets/tilesets/tilesets_n.png'
+import TilesetsJSON from '@assets/tilesets/tilesets.json'
+
 export class AssetsLoader {
-  constructor(private scene: Phaser.Scene) {}
+	constructor(private scene: Phaser.Scene) {}
 
-  public init(): void {
-    // this.loadTilesets()
-    this.loadCharacters()
-    // this.loadObjects()
-    this.loadUI()
-    this.loadGui()
-    // this.loadSong()
-  }
-  private loadAtlas(key: string): Phaser.Loader.LoaderPlugin {
-    return this.scene.load.atlas(key, [`${key}.png`, `${key}_n.png`], `${key}.json`)
-  }
-  private loadTilesets(): Phaser.Loader.LoaderPlugin {
-    return this.loadAtlas('tilesets')
-  }
-
-  private loadCharacters(): Phaser.Loader.LoaderPlugin {
-    return this.loadAtlas('characters')
-  }
-
-  private loadObjects(): Phaser.Loader.LoaderPlugin {
-    return this.loadAtlas('objects')
-  }
-
-  private loadUI(): Phaser.Loader.LoaderPlugin {
-    return this.loadAtlas('ui')
-  }
-
-  private loadGui() {
-    this.scene.load.spritesheet('start_button', 'StartButton.png', {
-      frameWidth: 70,
-      frameHeight: 38
-    })
-    this.scene.load.spritesheet('options_button', 'OptionsButton.png', {
-      frameWidth: 108,
-      frameHeight: 40
-    })
-    this.scene.load.spritesheet('game_title', 'Gametitle.png', {
-      frameWidth: 452,
-      frameHeight: 253
-    })
-    this.scene.load.image('bg_game_title', 'MapGameTitle.png')
-  }
-
-  private loadSong() {}
+	public init(): void {
+		this.scene.load.atlas('tilesets', [Tilesets, NTilesets], TilesetsJSON)
+		this.scene.load.atlas('objects', [Object, NObject], ObjectJSON)
+		this.scene.load.atlas('characters', [Character, NCharacter], CharacterJSON)
+		this.scene.load.atlas('ui', [Ui, NUi], UiJSON)
+	}
 }
