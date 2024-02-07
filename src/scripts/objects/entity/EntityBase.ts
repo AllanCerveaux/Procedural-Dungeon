@@ -4,7 +4,7 @@ import { SceneEventEmitter } from '@game/utils/events'
 import type { BaseConstructorArgs } from './type'
 import type { StatisticBase } from '../base/Statistics'
 
-import { Life, LifeDamageOrHealType } from '../base/Life'
+import { Life } from '../base/Life'
 import { Statistics } from '../base/Statistics'
 
 const default_statistics: StatisticBase = {
@@ -61,12 +61,18 @@ export abstract class EntityBase extends Phaser.GameObjects.Sprite {
 	abstract attack(): void
 	abstract eventHandler(): void
 
-	heal(cost: number, type: LifeDamageOrHealType): void {
-		this.life.increase(type, cost)
+	heal(): void {
+		this.setTint(0x00ff00)
+		this.scene.time.addEvent({
+			delay: 100,
+			callback: () => {
+				this.clearTint()
+			},
+		})
 	}
 
-	hit(cost: number, type: LifeDamageOrHealType): void {
-		if (this.life.heart + this.life.extra < 1) {
+	hit(): void {
+		if (this.life.total < 1) {
 			this.die()
 		}
 
@@ -80,9 +86,6 @@ export abstract class EntityBase extends Phaser.GameObjects.Sprite {
 				this.clearTint()
 			},
 		})
-
-		const damage_type = !type && this.life.extra > 0 ? LifeDamageOrHealType.Extra : LifeDamageOrHealType.Heart
-		this.life.decrease(damage_type, cost)
 	}
 
 	// @TODO: need review

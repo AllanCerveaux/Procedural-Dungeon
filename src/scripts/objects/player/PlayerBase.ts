@@ -3,7 +3,9 @@ import { PLAYER_EMITTER } from './type'
 import { Control } from '../base/Control'
 import { EntityBase } from '../entity/EntityBase'
 import { BaseConstructorArgs } from '../entity/type'
-import { PlayerEmitter } from '@game/utils/events'
+import { GUIEventEmitter, PlayerEmitter } from '@game/utils/events'
+import { LifeDamageOrHealType } from '../base/Life'
+import { LIFEBAR_EMITTER } from '../hud/Lifebar'
 
 export class PlayerBase extends EntityBase {
 	private control: Control
@@ -19,10 +21,24 @@ export class PlayerBase extends EntityBase {
 	}
 
 	eventHandler() {
-		PlayerEmitter.on(PLAYER_EMITTER.DAMAGE, this.hit.bind(this))
-		PlayerEmitter.on(PLAYER_EMITTER.HEAL, this.heal.bind(this))
-		PlayerEmitter.on(PLAYER_EMITTER.HEALTH_UP, this.life.increase.bind(this))
-		PlayerEmitter.on(PLAYER_EMITTER.HEALTH_DOWN, this.life.decrease.bind(this))
+		PlayerEmitter.on(PLAYER_EMITTER.DAMAGE, (type: LifeDamageOrHealType, cost: number) => {
+			this.hit()
+			this.life.decrease(type, cost)
+			GUIEventEmitter.emit(LIFEBAR_EMITTER.DAMAGE, type, cost)
+		})
+		PlayerEmitter.on(PLAYER_EMITTER.HEAL, (type: LifeDamageOrHealType, cost: number) => {
+			this.heal()
+			this.life.increase(type, cost)
+			GUIEventEmitter.emit(LIFEBAR_EMITTER.HEAL, type, cost)
+		})
+		PlayerEmitter.on(PLAYER_EMITTER.HEALTH_UP, (type: LifeDamageOrHealType) => {
+			this.life.increase_max(type)
+			GUIEventEmitter.emit(LIFEBAR_EMITTER.HEALTH_UP, type)
+		})
+		PlayerEmitter.on(PLAYER_EMITTER.HEALTH_DOWN, (type: LifeDamageOrHealType) => {
+			this.life.decrease_max(type)
+			GUIEventEmitter.emit(LIFEBAR_EMITTER.HEALTH_DOWN, type)
+		})
 	}
 
 	protected preUpdate(time: number, delta: number): void {

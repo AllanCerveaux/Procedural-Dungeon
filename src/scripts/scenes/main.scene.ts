@@ -41,11 +41,11 @@ export class MainScene extends Phaser.Scene {
 		})
 
 		this.physics.add.overlap(this.player, this.hitSquare, (_, hitSquare) => {
-			PlayerEmitter.emit(PLAYER_EMITTER.DAMAGE, 1)
+			PlayerEmitter.emit(PLAYER_EMITTER.DAMAGE, LifeDamageOrHealType.Heart, 1)
 			hitSquare.destroy()
 		})
 		this.physics.add.overlap(this.player, this.healSquare, (_, healSquare) => {
-			PlayerEmitter.emit(PLAYER_EMITTER.HEAL, 1, LifeDamageOrHealType.Heart)
+			PlayerEmitter.emit(PLAYER_EMITTER.HEAL, LifeDamageOrHealType.Heart, 1)
 			healSquare.destroy()
 		})
 	}
