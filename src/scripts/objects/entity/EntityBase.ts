@@ -47,14 +47,15 @@ export abstract class EntityBase extends Phaser.GameObjects.Sprite {
 		this.name = name
 		this.entity_type = type
 
+		this.life = new Life(life)
+		this.statistics = new Statistics(statistics)
+
 		this.body
 			.setCollideWorldBounds(true)
 			.setDamping(true)
 			.setSize(this.body.halfWidth / 2, this.body.halfHeight / 1.5)
 			.setOffset(this.body.halfWidth, 14)
-
-		this.life = new Life(life)
-		this.statistics = new Statistics(statistics)
+			.setMaxSpeed(this.statistics.max_speed)
 	}
 
 	abstract move(delta: number): void
@@ -72,7 +73,7 @@ export abstract class EntityBase extends Phaser.GameObjects.Sprite {
 	}
 
 	hit(): void {
-		if (this.life.total < 1) {
+		if (this.life.total === 0) {
 			this.die()
 		}
 

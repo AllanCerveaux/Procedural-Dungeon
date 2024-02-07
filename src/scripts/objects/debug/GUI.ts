@@ -3,25 +3,56 @@ import * as EssentialsPlugin from '@tweakpane/plugin-essentials'
 import { Pane } from 'tweakpane'
 import { PlayerEmitter } from '@utils/events'
 import { PLAYER_EMITTER } from '@game/objects/player/type'
+import { PlayerBase } from '../player/PlayerBase'
 
-export function DebugGUI() {
+export function DebugGUI(scene: Phaser.Scene, player: PlayerBase) {
 	const pane = new Pane({
 		title: 'Procedural Dungeon Debug',
 	})
+	pane.registerPlugin(EssentialsPlugin)
 
-	PlayerGUI(pane)
+	const game_folder = pane.addFolder({
+		title: 'Game',
+	})
+
+	game_folder.addBinding(scene.game.loop, 'actualFps', {
+		readonly: true,
+		label: 'FPS',
+		view: 'graph',
+		min: 0,
+		max: 120,
+	})
+
+	PlayerGUI(pane, player)
 }
 
-function PlayerGUI(pane: Pane) {
-	pane.registerPlugin(EssentialsPlugin)
+function PlayerGUI(pane: Pane, player: PlayerBase) {
 	const folder = pane.addFolder({
 		title: 'Player',
+	})
+
+	folder.addBinding(player.body, 'speed', {
+		readonly: true,
+		label: 'Speed',
 	})
 
 	const life_controller = folder.addFolder({
 		title: 'Life controller',
 		expanded: true,
 	})
+
+	life_controller.addBinding(player.life, 'max_total', {
+		readonly: true,
+	})
+
+	life_controller.addBinding(player.life, 'heart', {
+		readonly: true,
+	})
+
+	life_controller.addBinding(player.life, 'extra', {
+		readonly: true,
+	})
+
 	const add_remove = [
 		['+1 H', '-1 H'],
 		['+1 E', '-1 E'],

@@ -1,4 +1,4 @@
-export type StatisticsType = 'strength' | 'attack_speed' | 'attack_distance' | 'luck' | 'max_speed'
+export type StatisticsType = 'strength' | 'attack_speed' | 'attack_distance' | 'luck' | 'speed'
 
 export type StatisticBase = Record<StatisticsType, number>
 
@@ -7,7 +7,7 @@ export class Statistics {
 	private _attack_speed: number = 0
 	private _attack_distance: number = 0
 	private _luck: number = 0
-	private _max_speed: number = 0
+	private _speed: number = 0
 
 	constructor(stats: StatisticBase) {
 		Object.keys(stats).forEach((_key) => {
@@ -50,19 +50,19 @@ export class Statistics {
 		this._luck = value
 	}
 
-	get max_speed(): number {
-		return this._max_speed
+	get speed(): number {
+		return this._speed
 	}
 
-	set max_speed(value: number) {
-		this._max_speed = value
+	set speed(value: number) {
+		this._speed = value
 	}
 
 	increase(type: StatisticsType, cost: number): void {
-		this[type] = Math.max(0, this[type] + cost)
+		this[type] = this[type] + cost
 	}
 
 	decrease(type: StatisticsType, cost: number): void {
-		this[type] = Math.max(0, this[type] - cost)
+		this[type] = this[type] - cost
 	}
 }

@@ -15,21 +15,19 @@ export class PlayerBase extends EntityBase {
 
 		this.control = new Control(scene)
 
-		this.body.maxSpeed = 200
-
 		this.eventHandler()
 	}
 
 	eventHandler() {
 		PlayerEmitter.on(PLAYER_EMITTER.DAMAGE, (type: LifeDamageOrHealType, cost: number) => {
-			this.hit()
 			this.life.decrease(type, cost)
 			GUIEventEmitter.emit(LIFEBAR_EMITTER.DAMAGE, type, cost)
+			this.hit()
 		})
 		PlayerEmitter.on(PLAYER_EMITTER.HEAL, (type: LifeDamageOrHealType, cost: number) => {
-			this.heal()
 			this.life.increase(type, cost)
 			GUIEventEmitter.emit(LIFEBAR_EMITTER.HEAL, type, cost)
+			this.heal()
 		})
 		PlayerEmitter.on(PLAYER_EMITTER.HEALTH_UP, (type: LifeDamageOrHealType) => {
 			this.life.increase_max(type)
