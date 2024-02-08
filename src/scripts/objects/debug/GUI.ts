@@ -38,7 +38,7 @@ function PlayerGUI(pane: Pane, player: PlayerBase) {
 
 	const life_controller = folder.addFolder({
 		title: 'Life controller',
-		expanded: true,
+		expanded: false,
 	})
 
 	life_controller.addBinding(player.life, 'max_total', {
