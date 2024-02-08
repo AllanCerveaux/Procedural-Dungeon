@@ -5,13 +5,13 @@ import { PLAYER_EMITTER } from '@game/objects/player/type'
 import { PlayerEmitter, SceneEventEmitter } from '@game/utils/events'
 import { Knight } from '@objects/heroes/Knight'
 import { WeaponBase } from '@game/objects/weapon/WeaponBase'
-import { PlayerBase } from '@game/objects/player/PlayerBase'
 
 export class MainScene extends Phaser.Scene {
 	hud: Phaser.Scene | null
 	player: Knight
 	hitSquare: Phaser.GameObjects.Sprite
 	healSquare: Phaser.GameObjects.Sprite
+	weapon: WeaponBase<typeof this.player>
 
 	constructor() {
 		super({ key: SCENES.MAIN })
@@ -26,17 +26,12 @@ export class MainScene extends Phaser.Scene {
 			'flask_green',
 		)
 
-		this.physics.add.staticSprite
 		this.player = new Knight(this, DEFAULT_WIDTH / 2, DEFAULT_HEIGHT / 2, 'f')
 
 		this.cameras.main.setZoom(2)
 		this.cameras.main.startFollow(this.player)
 
-		this.hud = this.scene.add(OVERLAY.HUD, HUDScene, true, {
-			player: this.player,
-		})
-
-		const weapon = new WeaponBase({
+		this.weapon = new WeaponBase<typeof this.player>({
 			scene: this,
 			x: DEFAULT_WIDTH / 2,
 			y: DEFAULT_HEIGHT / 2 + 50,
@@ -60,12 +55,20 @@ export class MainScene extends Phaser.Scene {
 			}
 		})
 
-		this.physics.add.overlap(this.player, weapon, () => {
-			this.player.weapon = weapon as WeaponBase<PlayerBase>
+		this.physics.add.overlap(this.player, this.weapon, () => {
+			// const [player, weapon] = [_player as Knight, _weapon as WeaponBase<Knight>]
+			this.player.weapon = this.weapon
+		})
+
+		this.hud = this.scene.add(OVERLAY.HUD, HUDScene, true, {
+			player: this.player,
 		})
 	}
 
 	update(time: number, delta: number): void {
 		this.player.update(time, delta)
+		// if (this.player.control.axe_x !== 0 && this.player.control.axe_y !== 0) {
+
+		// }
 	}
 }

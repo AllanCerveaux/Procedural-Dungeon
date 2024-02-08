@@ -9,7 +9,7 @@ import { LIFEBAR_EMITTER } from '../hud/Lifebar'
 import { WeaponBase } from '../weapon/WeaponBase'
 
 export class PlayerBase extends EntityBase {
-	private control: Control
+	control: Control
 	private _weapon: WeaponBase<this> | null
 
 	constructor({ scene, x, y, texture, name, statistics, life }: Omit<BaseConstructorArgs, 'type'>) {
@@ -44,7 +44,7 @@ export class PlayerBase extends EntityBase {
 		super.preUpdate(time, delta)
 		this.control.update()
 
-		if (this.control.keys.drop.isDown) {
+		if (this._weapon && Phaser.Input.Keyboard.JustDown(this.control.keys.drop)) {
 			this.dropWeapon()
 		}
 
@@ -83,13 +83,9 @@ export class PlayerBase extends EntityBase {
 		return
 	}
 
-	set weapon(value: WeaponBase<this>) {
-		if (this._weapon) {
-			this.dropWeapon()
-		}
-
-		value.attach(this)
-		this._weapon = value
+	set weapon(weapon: WeaponBase<this>) {
+		weapon.attach(this)
+		this._weapon = weapon
 	}
 
 	dropWeapon() {
