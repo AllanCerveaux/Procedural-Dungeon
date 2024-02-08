@@ -7,6 +7,7 @@ export const DEFAULT_INPUT_KEYS = {
 	up: Phaser.Input.Keyboard.KeyCodes['UP'],
 	down: Phaser.Input.Keyboard.KeyCodes['DOWN'],
 	fire: Phaser.Input.Keyboard.KeyCodes['X'],
+	drop: Phaser.Input.Keyboard.KeyCodes['C'], // @todo: temporary key
 	activeItem: Phaser.Input.Keyboard.KeyCodes['SPACE'],
 	supportItem: Phaser.Input.Keyboard.KeyCodes['W'],
 	fullscreen: Phaser.Input.Keyboard.KeyCodes['F'],
