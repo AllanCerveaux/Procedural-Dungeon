@@ -12,7 +12,7 @@ const default_statistics: StatisticBase = {
 	attack_speed: 180,
 	attack_distance: 100,
 	luck: 0,
-	max_speed: 130,
+	speed: 130,
 }
 
 const default_life = {

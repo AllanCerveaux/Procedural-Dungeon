@@ -6,15 +6,22 @@ import { BaseConstructorArgs } from '../entity/type'
 import { GUIEventEmitter, PlayerEmitter } from '@game/utils/events'
 import { LifeDamageOrHealType } from '../base/Life'
 import { LIFEBAR_EMITTER } from '../hud/Lifebar'
+import { Weapon } from '../base/Weapon'
 
 export class PlayerBase extends EntityBase {
 	private control: Control
+	private weapon: Weapon<this>
 
 	constructor({ scene, x, y, texture, name, statistics, life }: Omit<BaseConstructorArgs, 'type'>) {
 		super({ scene, x, y, texture, name, statistics, life, type: 'player' })
 
 		this.control = new Control(scene)
-
+		this.weapon = new Weapon({
+			scene,
+			entity: this,
+			texture: 'objects',
+		})
+		this.weapon.setDepth(this.depth - 1)
 		this.eventHandler()
 	}
 
@@ -41,8 +48,8 @@ export class PlayerBase extends EntityBase {
 
 	protected preUpdate(time: number, delta: number): void {
 		super.preUpdate(time, delta)
-
 		this.control.update()
+
 		this.move(delta)
 	}
 
