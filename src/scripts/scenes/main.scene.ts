@@ -4,6 +4,8 @@ import { DEFAULT_HEIGHT, DEFAULT_WIDTH, OVERLAY, SCENES } from '@constants'
 import { PLAYER_EMITTER } from '@game/objects/player/type'
 import { PlayerEmitter, SceneEventEmitter } from '@game/utils/events'
 import { Knight } from '@objects/heroes/Knight'
+import { WeaponBase } from '@game/objects/weapon/WeaponBase'
+import { PlayerBase } from '@game/objects/player/PlayerBase'
 
 export class MainScene extends Phaser.Scene {
 	hud: Phaser.Scene | null
@@ -34,6 +36,12 @@ export class MainScene extends Phaser.Scene {
 			player: this.player,
 		})
 
+		const weapon = new WeaponBase({
+			scene: this,
+			x: DEFAULT_WIDTH / 2,
+			y: DEFAULT_HEIGHT / 2 + 50,
+		})
+
 		SceneEventEmitter.on('game_over', () => {
 			this.hud?.scene.remove()
 			this.scene.restart()
@@ -44,11 +52,16 @@ export class MainScene extends Phaser.Scene {
 			PlayerEmitter.emit(PLAYER_EMITTER.DAMAGE, LifeDamageOrHealType.Heart, 1)
 			hitSquare.destroy()
 		})
+
 		this.physics.add.overlap(this.player, this.healSquare, (_, healSquare) => {
 			if (!this.player.life.is_full_heal) {
 				PlayerEmitter.emit(PLAYER_EMITTER.HEAL, LifeDamageOrHealType.Heart, 1)
 				healSquare.destroy()
 			}
+		})
+
+		this.physics.add.overlap(this.player, weapon, () => {
+			this.player.weapon = weapon as WeaponBase<PlayerBase>
 		})
 	}
 
