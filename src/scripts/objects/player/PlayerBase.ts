@@ -6,22 +6,16 @@ import { BaseConstructorArgs } from '../entity/type'
 import { GUIEventEmitter, PlayerEmitter } from '@game/utils/events'
 import { LifeDamageOrHealType } from '../base/Life'
 import { LIFEBAR_EMITTER } from '../hud/Lifebar'
-import { Weapon } from '../base/Weapon'
+import { WeaponBase } from '../weapon/WeaponBase'
 
 export class PlayerBase extends EntityBase {
 	private control: Control
-	private weapon: Weapon<this>
+	private _weapon: WeaponBase<this> | null
 
 	constructor({ scene, x, y, texture, name, statistics, life }: Omit<BaseConstructorArgs, 'type'>) {
 		super({ scene, x, y, texture, name, statistics, life, type: 'player' })
 
 		this.control = new Control(scene)
-		this.weapon = new Weapon({
-			scene,
-			entity: this,
-			texture: 'objects',
-		})
-		this.weapon.setDepth(this.depth - 1)
 		this.eventHandler()
 	}
 
@@ -49,6 +43,10 @@ export class PlayerBase extends EntityBase {
 	protected preUpdate(time: number, delta: number): void {
 		super.preUpdate(time, delta)
 		this.control.update()
+
+		if (this.control.keys.drop.isDown) {
+			this.dropWeapon()
+		}
 
 		this.move(delta)
 	}
@@ -83,5 +81,20 @@ export class PlayerBase extends EntityBase {
 
 	attack(): void {
 		return
+	}
+
+	set weapon(value: WeaponBase<this>) {
+		if (this._weapon) {
+			this.dropWeapon()
+		}
+
+		value.attach(this)
+		this._weapon = value
+	}
+
+	dropWeapon() {
+		if (!this._weapon) return
+		this._weapon.detach()
+		this._weapon = null
 	}
 }
