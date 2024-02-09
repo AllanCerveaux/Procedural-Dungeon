@@ -9,9 +9,9 @@ import { WeaponBase } from '@game/objects/weapon/WeaponBase'
 export class MainScene extends Phaser.Scene {
 	hud: Phaser.Scene | null
 	player: Knight
-	hitSquare: Phaser.GameObjects.Sprite
+	hitSquare: Phaser.Types.Physics.Arcade.SpriteWithStaticBody
 	healSquare: Phaser.GameObjects.Sprite
-	weapon: WeaponBase<typeof this.player>
+	weapon: Array<WeaponBase<typeof this.player>>
 
 	constructor() {
 		super({ key: SCENES.MAIN })
@@ -31,11 +31,18 @@ export class MainScene extends Phaser.Scene {
 		this.cameras.main.setZoom(2)
 		this.cameras.main.startFollow(this.player)
 
-		this.weapon = new WeaponBase<typeof this.player>({
-			scene: this,
-			x: DEFAULT_WIDTH / 2,
-			y: DEFAULT_HEIGHT / 2 + 50,
-		})
+		this.weapon = [
+			new WeaponBase<typeof this.player>({
+				scene: this,
+				x: DEFAULT_WIDTH / 2,
+				y: DEFAULT_HEIGHT / 2 + 50,
+			}),
+			new WeaponBase<typeof this.player>({
+				scene: this,
+				x: DEFAULT_WIDTH / 2,
+				y: DEFAULT_HEIGHT / 2 - 50,
+			}),
+		]
 
 		SceneEventEmitter.on('game_over', () => {
 			this.hud?.scene.remove()
@@ -55,10 +62,7 @@ export class MainScene extends Phaser.Scene {
 			}
 		})
 
-		this.physics.add.overlap(this.player, this.weapon, () => {
-			// const [player, weapon] = [_player as Knight, _weapon as WeaponBase<Knight>]
-			this.player.weapon = this.weapon
-		})
+		this.physics.add.overlap(this.player, this.weapon)
 
 		this.hud = this.scene.add(OVERLAY.HUD, HUDScene, true, {
 			player: this.player,
