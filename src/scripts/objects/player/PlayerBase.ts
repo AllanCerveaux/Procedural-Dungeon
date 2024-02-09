@@ -11,7 +11,7 @@ import { COLLISION_CATEGORY } from '@game/constants'
 
 export class PlayerBase extends EntityBase {
 	control: Control
-	private _weapon: WeaponBase<this> | null
+	private _weapon: WeaponBase | null
 
 	constructor({ scene, x, y, texture, name, statistics, life }: Omit<BaseConstructorArgs, 'type'>) {
 		super({ scene, x, y, texture, name, statistics, life, type: 'player' })
@@ -55,18 +55,13 @@ export class PlayerBase extends EntityBase {
 		if (this._weapon && Phaser.Input.Keyboard.JustDown(this.control.keys.drop)) {
 			this.dropWeapon()
 		}
-		// console.log(this.body)
+
 		this.move(delta)
 	}
 
 	handleOverlap(target: PlayerBase, bodies: Phaser.Types.Physics.Arcade.GameObjectWithBody): void {
 		if (bodies instanceof WeaponBase) {
-			if (target._weapon) {
-				console.log('have weapon')
-				target.dropWeapon()
-			}
-			console.log(bodies)
-			target.weapon = bodies
+			target.toggleWeapon(bodies)
 		}
 	}
 
@@ -102,14 +97,19 @@ export class PlayerBase extends EntityBase {
 		return
 	}
 
-	set weapon(weapon: WeaponBase<this>) {
+	set weapon(weapon: WeaponBase) {
 		weapon.attach(this)
 		this._weapon = weapon
 	}
 
-	dropWeapon() {
+	dropWeapon(direction?: number) {
 		if (!this._weapon) return
-		this._weapon.detach()
+		this._weapon.detach(direction)
 		this._weapon = null
+	}
+
+	toggleWeapon(weapon: WeaponBase) {
+		if (this._weapon) this.dropWeapon(-this.control.axe_x)
+		this.weapon = weapon
 	}
 }

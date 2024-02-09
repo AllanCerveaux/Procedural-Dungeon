@@ -11,7 +11,7 @@ export class MainScene extends Phaser.Scene {
 	player: Knight
 	hitSquare: Phaser.Types.Physics.Arcade.SpriteWithStaticBody
 	healSquare: Phaser.GameObjects.Sprite
-	weapon: Array<WeaponBase<typeof this.player>>
+	weapon: Array<WeaponBase>
 
 	constructor() {
 		super({ key: SCENES.MAIN })
@@ -32,12 +32,12 @@ export class MainScene extends Phaser.Scene {
 		this.cameras.main.startFollow(this.player)
 
 		this.weapon = [
-			new WeaponBase<typeof this.player>({
+			new WeaponBase({
 				scene: this,
 				x: DEFAULT_WIDTH / 2,
 				y: DEFAULT_HEIGHT / 2 + 50,
 			}),
-			new WeaponBase<typeof this.player>({
+			new WeaponBase({
 				scene: this,
 				x: DEFAULT_WIDTH / 2,
 				y: DEFAULT_HEIGHT / 2 - 50,
