@@ -1,9 +1,11 @@
 import { EntityBase } from '../entity/EntityBase'
 import { Control } from '../base/Control'
 import object from '@assets/sprites/objects/objects.json' // for debug remove when finsh
+import { COLLISION_CATEGORY } from '@game/constants'
 
 export class WeaponBase<Entity extends EntityBase> extends Phaser.GameObjects.Sprite {
 	declare body: Phaser.Physics.Arcade.Body
+	_collision_id: number
 
 	private _entity: Entity | undefined
 	private _last_facing: number = 1
@@ -15,14 +17,19 @@ export class WeaponBase<Entity extends EntityBase> extends Phaser.GameObjects.Sp
 		super(scene, x, y, 'objects')
 		scene.add.existing(this)
 		scene.physics.add.existing(this)
-		const weapons = Object.keys(object.frames).filter((frame) => frame.includes('weapon')) // for debug remove when finsh
 
+		const weapons = Object.keys(object.frames).filter((frame) => frame.includes('weapon')) // for debug remove when finsh
 		this.setFrame(Phaser.Utils.Array.Shuffle(weapons).shift() as string)
+
 		this.setDepth(-1)
+
 		this.body.setSize(this.body.halfWidth)
+
 		this._entity = entity
 
 		this.setOnGroundAnimation()
+
+		this.body.setCollisionCategory(COLLISION_CATEGORY.WEAPON)
 	}
 
 	protected preUpdate(time: number, delta: number): void {
@@ -39,8 +46,8 @@ export class WeaponBase<Entity extends EntityBase> extends Phaser.GameObjects.Sp
 		}
 
 		if (this._entity && this._just_drop && Phaser.Math.Distance.BetweenPoints(this, this._entity) >= 15) {
+			this.body.setCollidesWith(COLLISION_CATEGORY.PLAYER)
 			this._just_drop = false
-			this.body.setEnable(true)
 			this.setOnGroundAnimation()
 			this._entity = undefined
 		}
@@ -61,17 +68,20 @@ export class WeaponBase<Entity extends EntityBase> extends Phaser.GameObjects.Sp
 		return this._last_facing
 	}
 
+	get attacWithEntity(): boolean {
+		return !!this._entity
+	}
+
 	attach(entity: Entity) {
+		this.body.removeCollidesWith(COLLISION_CATEGORY.PLAYER)
 		this._on_ground_tween.stop()
 		this._entity = entity
 	}
 
 	detach() {
-		if (!this._entity) return
+		if (!this.attacWithEntity) return
 
 		this._just_drop = true
-
-		this.body.setEnable(false)
 	}
 
 	/**
@@ -86,7 +96,7 @@ export class WeaponBase<Entity extends EntityBase> extends Phaser.GameObjects.Sp
 				to: this.y + 5,
 			},
 			ease: 'Power1',
-			duration: 500,
+			duration: 400,
 			yoyo: true,
 			repeat: -1,
 			stop: !this._entity,

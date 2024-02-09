@@ -7,6 +7,7 @@ import { GUIEventEmitter, PlayerEmitter } from '@game/utils/events'
 import { LifeDamageOrHealType } from '../base/Life'
 import { LIFEBAR_EMITTER } from '../hud/Lifebar'
 import { WeaponBase } from '../weapon/WeaponBase'
+import { COLLISION_CATEGORY } from '@game/constants'
 
 export class PlayerBase extends EntityBase {
 	control: Control
@@ -16,10 +17,15 @@ export class PlayerBase extends EntityBase {
 		super({ scene, x, y, texture, name, statistics, life, type: 'player' })
 
 		this.control = new Control(scene)
-		this.eventHandler()
+		this.setupListener()
+
+		this.body.setCollisionCategory(COLLISION_CATEGORY.PLAYER)
+		this.body.addCollidesWith(COLLISION_CATEGORY.WEAPON)
+		this.body.onCollide = true
+		this.body.onOverlap = true
 	}
 
-	eventHandler() {
+	setupListener() {
 		PlayerEmitter.on(PLAYER_EMITTER.DAMAGE, (type: LifeDamageOrHealType, cost: number) => {
 			this.life.decrease(type, cost)
 			GUIEventEmitter.emit(LIFEBAR_EMITTER.DAMAGE, type, cost)
@@ -38,6 +44,8 @@ export class PlayerBase extends EntityBase {
 			this.life.decrease_max(type)
 			GUIEventEmitter.emit(LIFEBAR_EMITTER.HEALTH_DOWN, type)
 		})
+
+		this.scene.physics.world.on('overlap', this.handleOverlap)
 	}
 
 	protected preUpdate(time: number, delta: number): void {
@@ -47,8 +55,19 @@ export class PlayerBase extends EntityBase {
 		if (this._weapon && Phaser.Input.Keyboard.JustDown(this.control.keys.drop)) {
 			this.dropWeapon()
 		}
-
+		// console.log(this.body)
 		this.move(delta)
+	}
+
+	handleOverlap(target: PlayerBase, bodies: Phaser.Types.Physics.Arcade.GameObjectWithBody): void {
+		if (bodies instanceof WeaponBase) {
+			if (target._weapon) {
+				console.log('have weapon')
+				target.dropWeapon()
+			}
+			console.log(bodies)
+			target.weapon = bodies
+		}
 	}
 
 	move(delta: number): void {
