@@ -27,3 +27,10 @@ export enum OVERLAY {
 	HUD = 'hud-overlay',
 	MAP = 'map-overlay',
 }
+
+export enum COLLISION_CATEGORY {
+	PLAYER = 0x0001,
+	ENEMY = 0x0002,
+	WEAPON = 0x0003,
+	ITEM = 0x0004,
+}
