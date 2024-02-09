@@ -60,7 +60,11 @@ export abstract class EntityBase extends Phaser.GameObjects.Sprite {
 
 	abstract move(delta: number): void
 	abstract attack(): void
-	abstract eventHandler(): void
+	abstract setupListener(): void
+	abstract handleOverlap(
+		target: Phaser.Types.Physics.Arcade.GameObjectWithBody,
+		bodies: Phaser.Types.Physics.Arcade.GameObjectWithBody,
+	): void
 
 	heal(): void {
 		this.setTint(0x00ff00)
