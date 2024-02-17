@@ -8,33 +8,35 @@ import { LifeDamageOrHealType } from '../base/Life'
 import { LIFEBAR_EMITTER } from '../hud/Lifebar'
 
 export class PlayerBase extends EntityBase {
-	private control: Control
+	private readonly LINEAR_SMOOTHING_VALUE = 0.05
 
-	constructor({ scene, x, y, texture, name, statistics, life }: Omit<BaseConstructorArgs, 'type'>) {
-		super({ scene, x, y, texture, name, statistics, life, type: 'player' })
+	_control: Control
 
-		this.control = new Control(scene)
+	constructor({ scene, x, y, name, statistics, life }: Omit<BaseConstructorArgs, 'type'>) {
+		super({ scene, x, y, name, statistics, life, type: 'player' })
+
+		this._control = new Control(scene)
 
 		this.eventHandler()
 	}
 
 	eventHandler() {
 		PlayerEmitter.on(PLAYER_EMITTER.DAMAGE, (type: LifeDamageOrHealType, cost: number) => {
-			this.life.decrease(type, cost)
+			this._life.decrease(type, cost)
 			GUIEventEmitter.emit(LIFEBAR_EMITTER.DAMAGE, type, cost)
 			this.hit()
 		})
 		PlayerEmitter.on(PLAYER_EMITTER.HEAL, (type: LifeDamageOrHealType, cost: number) => {
-			this.life.increase(type, cost)
+			this._life.increase(type, cost)
 			GUIEventEmitter.emit(LIFEBAR_EMITTER.HEAL, type, cost)
 			this.heal()
 		})
 		PlayerEmitter.on(PLAYER_EMITTER.HEALTH_UP, (type: LifeDamageOrHealType) => {
-			this.life.increase_max(type)
+			this._life.increase_max(type)
 			GUIEventEmitter.emit(LIFEBAR_EMITTER.HEALTH_UP, type)
 		})
 		PlayerEmitter.on(PLAYER_EMITTER.HEALTH_DOWN, (type: LifeDamageOrHealType) => {
-			this.life.decrease_max(type)
+			this._life.decrease_max(type)
 			GUIEventEmitter.emit(LIFEBAR_EMITTER.HEALTH_DOWN, type)
 		})
 	}
@@ -42,38 +44,38 @@ export class PlayerBase extends EntityBase {
 	protected preUpdate(time: number, delta: number): void {
 		super.preUpdate(time, delta)
 
-		this.control.update()
-		this.move(delta)
+		this._control.update()
+		if (Phaser.Input.Keyboard.JustDown(this._control.keys.fire)) {
+			this.attack()
+		}
+		this.move()
 	}
 
-	move(delta: number): void {
-		if (this.control.axe_x === 0 && this.control.axe_y === 0) {
+	move(): void {
+		if (this._control.axe_x === 0 && this._control.axe_y === 0) {
 			this.anims.play(`${this.name}_idle`, true)
 			this.body.setVelocity(0, 0)
 		} else {
 			this.anims.play(`${this.name}_run`, true)
 		}
 
-		if (this.control.axe_x !== 0) {
-			this.setFlipX(this.control.axe_x < 0)
+		if (this._control.axe_x !== 0) {
+			this.setFlipX(this._control.axe_x < 0)
 		}
 
-		const velocity_interop = 0.005 * delta
-
-		const vertical_speed = Phaser.Math.Linear(
-			this.body.velocity.y,
-			this.body.maxSpeed * this.control.axe_y,
-			velocity_interop,
-		)
-		const horizontal_speed = Phaser.Math.Linear(
-			this.body.velocity.x,
-			this.body.maxSpeed * this.control.axe_x,
-			velocity_interop,
+		const { x, y } = Phaser.Math.LinearXY(
+			this.body.velocity,
+			new Phaser.Math.Vector2(this.body.maxSpeed * this._control.axe_x, this.body.maxSpeed * this._control.axe_y),
+			this.LINEAR_SMOOTHING_VALUE,
 		)
 
-		this.body.setVelocity(horizontal_speed, vertical_speed)
+		this.body.setVelocity(x, y)
 	}
-
+	/**
+	 * @hint Use Zone to defined hit-zone
+	 * @link https://newdocs.phaser.io/docs/3.54.0/Phaser.GameObjects.Zone
+	 * @returns
+	 */
 	attack(): void {
 		return
 	}

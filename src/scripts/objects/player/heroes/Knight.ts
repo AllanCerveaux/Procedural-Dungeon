@@ -1,4 +1,4 @@
-import { PlayerBase } from '../player/PlayerBase'
+import { PlayerBase } from '../PlayerBase'
 
 export class Knight extends PlayerBase {
 	constructor(scene: Phaser.Scene, x: number, y: number, gender: string) {
@@ -8,7 +8,6 @@ export class Knight extends PlayerBase {
 			scene,
 			x,
 			y,
-			texture: 'characters',
 			name,
 			statistics: {
 				strength: 200,
