@@ -45,6 +45,9 @@ export class PlayerBase extends EntityBase {
 		super.preUpdate(time, delta)
 
 		this._control.update()
+		if (Phaser.Input.Keyboard.JustDown(this._control.keys.fire)) {
+			this.attack()
+		}
 		this.move()
 	}
 
@@ -68,7 +71,11 @@ export class PlayerBase extends EntityBase {
 
 		this.body.setVelocity(x, y)
 	}
-
+	/**
+	 * @hint Use Zone to defined hit-zone
+	 * @link https://newdocs.phaser.io/docs/3.54.0/Phaser.GameObjects.Zone
+	 * @returns
+	 */
 	attack(): void {
 		return
 	}
