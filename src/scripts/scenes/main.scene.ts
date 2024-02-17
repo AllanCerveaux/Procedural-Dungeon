@@ -3,7 +3,7 @@ import { HUDScene } from './overlay/hud.scene'
 import { DEFAULT_HEIGHT, DEFAULT_WIDTH, OVERLAY, SCENES } from '@constants'
 import { PLAYER_EMITTER } from '@game/objects/player/type'
 import { PlayerEmitter, SceneEventEmitter } from '@game/utils/events'
-import { Knight } from '@objects/heroes/Knight'
+import { Knight } from '@game/objects/player/heroes/Knight'
 
 export class MainScene extends Phaser.Scene {
 	hud: Phaser.Scene | null
@@ -24,7 +24,6 @@ export class MainScene extends Phaser.Scene {
 			'flask_green',
 		)
 
-		this.physics.add.staticSprite
 		this.player = new Knight(this, DEFAULT_WIDTH / 2, DEFAULT_HEIGHT / 2, 'f')
 
 		this.cameras.main.setZoom(2)
@@ -45,14 +44,12 @@ export class MainScene extends Phaser.Scene {
 			hitSquare.destroy()
 		})
 		this.physics.add.overlap(this.player, this.healSquare, (_, healSquare) => {
-			if (!this.player.life.is_full_heal) {
+			if (!this.player._life.is_full_heal) {
 				PlayerEmitter.emit(PLAYER_EMITTER.HEAL, LifeDamageOrHealType.Heart, 1)
 				healSquare.destroy()
 			}
 		})
 	}
 
-	update(time: number, delta: number): void {
-		this.player.update(time, delta)
-	}
+	update(): void {}
 }

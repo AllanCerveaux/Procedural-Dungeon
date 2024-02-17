@@ -74,18 +74,18 @@ export class Lifebar extends Phaser.GameObjects.Container {
 
 	health_down(type: LifeDamageOrHealType) {
 		const isExtra = type === LifeDamageOrHealType.Extra
-
 		const last_heart = this.getAll('isExtra', isExtra).pop()
 
-		if (last_heart) {
-			this.removeAt(this.getIndex(last_heart), true)
-			this.updateAlignment()
-		}
+		if (!last_heart) return
+
+		this.removeAt(this.getIndex(last_heart), true)
+		this.updateAlignment()
 	}
 
 	heal(type: LifeDamageOrHealType, cost: number = 1) {
 		const isExtra = type === LifeDamageOrHealType.Extra
 		const heart = this.list.find((heart) => heart.isExtra === isExtra && heart.state !== HEART_STATE.FULL)
+
 		if (!heart) return
 
 		heart.increaseState(cost)
@@ -94,9 +94,11 @@ export class Lifebar extends Phaser.GameObjects.Container {
 	damage(type: LifeDamageOrHealType, cost: number = 1) {
 		const isExtra = type === LifeDamageOrHealType.Extra
 		const lastHeart = [...this.list].reverse().find((heart) => heart.isExtra === isExtra && !heart.isEmpty)
+
 		if (!lastHeart) return
 
 		lastHeart.decreaseState(cost)
+
 		if (lastHeart.isEmpty && lastHeart.isExtra) {
 			this.health_down(type)
 		}

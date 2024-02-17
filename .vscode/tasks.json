@@ -1,0 +1,41 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Development Server - Start",
+			"type": "shell",
+			"command": "pnpm start",
+			"isBackground": true,
+			"problemMatcher": {
+				// There's no better way to run the browser after tasks
+				// @TODO: Need refacto maybe
+				"owner": "custom",
+				"pattern": {
+					"regexp": ".*",
+					"file": 1,
+					"location": 2,
+					"message": 3
+				},
+				"background": {
+					"activeOnStart": true,
+					"beginsPattern": ".*VITE.*",
+					"endsPattern": ".*ready in.*ms"
+				}
+			},
+			"presentation": {
+				"reveal": "always",
+				"panel": "shared",
+			}
+		},
+		{
+			"label": "Development Server - Stop",
+			"type": "shell",
+			"command": "kill $(lsof -t -i:3000)",
+			"problemMatcher": [],
+			"presentation": {
+				"reveal": "silent",
+				"panel": "dedicated"
+			}
+		}
+	]
+}

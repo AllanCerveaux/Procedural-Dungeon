@@ -4,7 +4,7 @@ import tsconfigPaths from 'vite-tsconfig-paths'
 
 export default defineConfig({
 	plugins: [eslint(), tsconfigPaths()],
-	resolve: {},
+	base: '/Procedural-Dungeon/',
 	build: {
 		// phaser doesn't accept inlined assets
 		assetsInlineLimit: 0,
@@ -12,6 +12,5 @@ export default defineConfig({
 	server: {
 		host: process.env.VITE_HOST ? process.env.VITE_HOST : '0.0.0.0',
 		port: 3000,
-		open: '/',
 	},
 })

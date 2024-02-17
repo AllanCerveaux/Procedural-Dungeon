@@ -14,7 +14,7 @@
 
 ### Developer Notes
 
-`Procedural-Dungeon` is developed using Typescript and Node.js 6.12 or >, so you shouldn't run into issues testing the repository on later versions.
+`Procedural-Dungeon` is developed using Typescript and Node.js 20.X or >, so you shouldn't run into issues testing the repository on later versions.
 
 #### Setup
 
@@ -28,8 +28,8 @@ That's all there is to it for setup project.
 
 #### Keep In Mind
 
-- **Follow the coding** conventions. Run `yarn xo` to spot linting problems early.
-- **Avoid making changes directly on** `master`, **use topic branches instead**. Use `git checkout [feature||fix]/[feature_name]` (of course, replacing `feature-branch` with a name you feel more appropriate), edit and commit your changes there (start your commit with `FEATURE` for new feature, `FIX` if resolve problem, `WIP` if not finish your job ...). Run `git push` when you're done.
+- **Follow the coding** conventions. Run `pnpm xo` to spot linting problems early.
+- **Avoid making changes directly on** `main`, **use topic branches instead**. Use `git checkout [feature||fix]/[feature_name]` (of course, replacing `feature-branch` with a name you feel more appropriate), edit and commit your changes there (start your commit with `FEATURE` for new feature, `FIX` if resolve problem, `WIP` if not finish your job ...). Run `git push` when you're done.
 - `Refrain from editing the repository through GitHub`. Changes made with the GitHub editor are cumbersome and harder to evaluate, especially changes made to the source code. Changes made on a local working copy are more reliable and more appropriate pull requests.
 
 > OK, nobody is perfect. Don't feel intimidated if you don't know how to do all that stuff. I won't turn down your proposal right away just because you have failed any of these prerequisites, too. When applicable, I can do the necessary amendments and apply your changes. Just be careful and do your best!
