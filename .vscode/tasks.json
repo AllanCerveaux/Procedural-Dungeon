@@ -8,6 +8,7 @@
 			"isBackground": true,
 			"problemMatcher": {
 				// There's no better way to run the browser after tasks
+				// @TODO: Need refacto maybe
 				"owner": "custom",
 				"pattern": {
 					"regexp": ".*",
